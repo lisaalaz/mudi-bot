@@ -53,6 +53,7 @@ def chatbot():
 
     if current_wait_turns > 0:
       print(f"waiting {current_wait_turns} turn/s before starting any next task")
+      current_wait_turns -= 1
     api_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages,
@@ -64,7 +65,6 @@ def chatbot():
     print(colorama.Back.GREEN + colorama.Fore.WHITE)
     user_utterance = input(f"{username}: ")
     print(colorama.Style.RESET_ALL)
-    current_wait_turns -= 1
     end_conversation = parsing_utils.wants_to_end(user_utterance)
     global_emotions_map, global_events_map, emotions_map, events_map, sat_exercises = parsing_utils.parse_user_message(global_emotions_map, global_events_map, user_utterance, sat_exercises)
     messages.append({"role": "user", "content": user_utterance})

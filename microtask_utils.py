@@ -114,6 +114,15 @@ class Microtask():
     self.pointer = 0
     self.turns_since_added = 0
 
+  def __eq__(self, compare_with):
+    return self.priority == compare_with.get_priority()
+  
+  def __lt__(self, compare_with):
+    return self.priority < compare_with.get_priority()
+  
+  def __gt__(self, compare_with):
+    return self.priority > compare_with.get_priority()
+
   def get_name(self):
     return self.name
 
@@ -199,19 +208,19 @@ class Microtask():
 def add_to_queue(microtask, reference, q):
     task_to_add = copy.deepcopy(microtask)
     task_to_add.add_reference(reference)
-    q.put((task_to_add.get_priority(), task_to_add), block=False)
+    q.put((task_to_add.get_priority(), task_to_add), False)
     return q
 
 
 def listify_queue(q, increase_turn_counter_switch):
   q_copy = []
   while not q.empty():
-    elem = q.get(block=False)
+    elem = q.get(False)
     q_copy.append(elem[1])
   for x in q_copy:
     if increase_turn_counter_switch:
       x.increase_turn_counter()
-    q.put((x.get_priority(), x), block=False)
+    q.put((x.get_priority(), x), False)
   return q, q_copy
 
 

@@ -277,14 +277,14 @@ def parse_user_message(global_emotions_map, global_events_map, prompt, sat_exerc
     #if past_or_future_event(prompt) == "past":
     event_time = recent_or_distant_event(prompt)
     events_map[event_summary]["time_of_event"] = event_time
-    if emotion_detected == "yes" and emotion != "neutral":
+    if emotion_detected and emotion != "neutral":
         events_map[event_summary]["resulting_emotion"] = emotion
         emotions_map[emotion] = {}
         emotions_map[emotion]["intensity"] = degree
         emotions_map[emotion]['cause'] = event_summary
     else:
         events_map[event_summary]["resulting_emotion"] = None
-  elif emotion_detected == "yes" and emotion != "neutral":
+  elif emotion_detected and emotion != "neutral":
       emotions_map[emotion] = {}
       emotions_map[emotion]["intensity"] = degree
       emotions_map[emotion]['cause'] = None
