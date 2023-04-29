@@ -56,7 +56,7 @@ mt_attributes = {
               "continue_condition": lambda bot_turn, user_turn: "ask_more_feelings" if (parsing_utils.is_answer(bot_turn, user_turn)) else "abort"
           },
           "ask_more_feelings": {
-              "question": "apologise for being so insistent, and in the interest of self-discovery and self-awareness ask if there are also other feelings associated with the event {}. If you said the same thing previously, change this enough so it is not repetitive. Do not ask any other questions apart from this.",
+              "question": "ask, in the interest of self-discovery and self-awareness, if there are also other feelings associated with the event {}. If you said the same thing previously, change this enough so it is not repetitive. Do not ask any other questions apart from this.",
               "continue_condition": lambda bot_turn, user_turn: "end" if (parsing_utils.is_answer(bot_turn, user_turn)) else "abort"
            },
          }, 
@@ -82,15 +82,15 @@ mt_attributes = {
       "expires_after": math.inf, 
       "dag": {
           "propose_exercise": {
-              "question": "paraphrase the following sentence, preserving its original meaning and without adding anything: 'would you like me to recommend a Self-Attachment technique exercise that might help?'",
+              "question": "ask the following question (you may paraphrase it slightly): 'Would you like me to recommend a Self-Attachment technique exercise that might help?'",
               "continue_condition": lambda bot_turn, user_turn: "exercise_choice" if (parsing_utils.is_answer(bot_turn, user_turn) and parsing_utils.is_answer_positive(bot_turn, user_turn)) else "abort"
           },
           "exercise_choice": {
-              "question": "paraphrase the following text, preserving its original meaning and without adding anything: 'I can recommend the following exercises, please let me know which one you would like'.",
+              "question": "ask the following question (you may paraphrase it slightly): 'I can recommend the following exercises, please let me know which one you would like'.",
               "continue_condition": lambda bot_turn, user_turn: "exercise_instructions" if (parsing_utils.is_answer(bot_turn, user_turn) and parsing_utils.wants_exercise(bot_turn, user_turn)) else "abort"
            },
            "exercise_instructions": {
-              "question": "paraphrase the following text, preserving its original meaning and without adding anything: 'Please go to the exercise now, and let me know once you have done it. If for any reason you cannot do it right now, just let me know'.",
+              "question": "ask the following question (you may paraphrase it slightly): 'Please go to the exercise now, and let me know once you have done it. If for any reason you cannot do it right now, just let me know'.",
               "continue_condition": lambda bot_turn, user_turn: "end"
            },
          }, 
@@ -115,13 +115,13 @@ class Microtask():
     self.turns_since_added = 0
 
   def __eq__(self, compare_with):
-    return self.priority == compare_with.get_priority()
+    return self.priority == compare_with.priority
   
   def __lt__(self, compare_with):
-    return self.priority < compare_with.get_priority()
+    return self.priority < compare_with.priority
   
   def __gt__(self, compare_with):
-    return self.priority > compare_with.get_priority()
+    return self.priority > compare_with.priority
 
   def get_name(self):
     return self.name
