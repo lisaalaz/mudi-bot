@@ -261,10 +261,10 @@ def turn(question, task_reference, messages, sat_exercises, prompt, available_ta
      )
   bot_turn = api_response['choices'][0]['message']['content']
   print(colorama.Style.RESET_ALL)
-  print(colorama.Back.BLUE + colorama.Fore.WHITE + f"MiTa: {bot_turn}")
+  print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_turn}")
   if question == "Paraphrase the following text, preserving its original meaning: 'I can recommend the following exercises, please let me know which one you would like:'. Do not ask any question or say anything else after this.":
     sat_utils.show_recommendations(sat_exercises)
-  print(colorama.Back.GREEN + colorama.Fore.WHITE)
+  print(colorama.Back.WHITE + colorama.Fore.BLACK)
   user_turn = input(f'{username}: ')
   print(colorama.Style.RESET_ALL)
   global_emotions_map, global_events_map, emotions_map, events_map, sat_exercises = parsing_utils.parse_user_message(global_emotions_map, global_events_map, user_turn, sat_exercises)

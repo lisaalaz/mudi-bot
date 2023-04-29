@@ -61,8 +61,8 @@ def chatbot():
     bot_utterance = api_response['choices'][0]['message']['content']
     messages.append({"role": "assistant", "content": bot_utterance})
     print(colorama.Style.RESET_ALL)
-    print(colorama.Back.BLUE + colorama.Fore.WHITE + f"MiTa: {bot_utterance}")
-    print(colorama.Back.GREEN + colorama.Fore.WHITE)
+    print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_utterance}")
+    print(colorama.Back.WHITE + colorama.Fore.BLACK)
     user_utterance = input(f"{username}: ")
     print(colorama.Style.RESET_ALL)
     end_conversation = parsing_utils.wants_to_end(user_utterance)
