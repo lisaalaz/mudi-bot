@@ -1,15 +1,12 @@
 import colorama
 import copy
 import math
-import openai
 
 import parsing_utils
 import sat_utils
 
+from model_utils import load_model, create_response
 from prompting_utils import username
-
-from secret_key import key # You will need your own OpenAI API key to insert below
-openai.api_key = key
 
 
 mt_attributes = {
@@ -172,7 +169,7 @@ class Microtask():
     removed_tasks.append(self)
     return active_tasks, removed_tasks
 
-  def execute_task(self, messages, exercises, prompt, available_tasks, active_tasks, removed_tasks, global_emotions_map, global_events_map):
+  def execute_task(self, messages, exercises, prompt, available_tasks, active_tasks, removed_tasks, global_emotions_map, global_events_map, model_type, model, tokenizer):
     end_conversation = False
     continue_task = True
 
@@ -183,7 +180,9 @@ class Microtask():
     current_turn = list(self.dag.keys())[0]
 
     while continue_task and not end_conversation: #and self.pointer < len(self.dag):
-        bot_turn, user_turn, messages, exercises, active_tasks, end_conversation = turn(self.dag[current_turn]["question"], reference_to_pass, messages, exercises, prompt, available_tasks, active_tasks, removed_tasks, global_emotions_map, global_events_map)
+        bot_turn, user_turn, messages, exercises, active_tasks, end_conversation = turn(self.dag[current_turn]["question"], reference_to_pass, messages, exercises, prompt, 
+                                                                                        available_tasks, active_tasks, removed_tasks, global_emotions_map, global_events_map,
+                                                                                        model_type, model, tokenizer)
         choice = self.dag[current_turn]["continue_condition"](bot_turn, user_turn)
         #print(f"The choice is {choice}")
         if end_conversation:
@@ -252,17 +251,13 @@ def load_microtasks():
   return available_microtasks
 
 
-def turn(question, task_reference, messages, sat_exercises, prompt, available_tasks, all_tasks, removed_tasks, global_emotions_map, global_events_map):
+def turn(question, task_reference, messages, sat_exercises, prompt, available_tasks, all_tasks, removed_tasks, global_emotions_map, global_events_map, model_type, model, tokenizer):
   if question:
     messages.append({"role": "system", "content": f"{prompt}" + question.format(task_reference)})
-  api_response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages
-     )
-  bot_turn = api_response['choices'][0]['message']['content']
+  bot_turn = create_response(messages, model_type, model, tokenizer, task_prompt=None)
   print(colorama.Style.RESET_ALL)
   print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_turn}")
-  if question == "Paraphrase the following text, preserving its original meaning: 'I can recommend the following exercises, please let me know which one you would like:'. Do not ask any question or say anything else after this.":
+  if question == "ask the following question (you may paraphrase it slightly): 'I can recommend the following exercises, please let me know which one you would like'.":
     sat_utils.show_recommendations(sat_exercises)
   print(colorama.Back.WHITE + colorama.Fore.BLACK)
   user_turn = input(f'{username}: ')

@@ -1,17 +1,19 @@
 import colorama
-import openai
+# import openai
 import queue
 
 import microtask_utils
+from model_utils import load_model, create_response
 import parsing_utils
 
 from prompting_utils import username, instruction_prompt, system_prompt
 
-from secret_key import key # You will need your own OpenAI API key to insert below
-openai.api_key = key
+# from secret_key import key # You will need your own OpenAI API key to insert below
+# openai.api_key = key
 
 
-def chatbot():
+def chatbot(model_type):
+  model, tokenizer = load_model(model_type)
   prompt = instruction_prompt
   messages = [
       {"role": "system", 
@@ -54,11 +56,7 @@ def chatbot():
     if current_wait_turns > 0:
       print(f"waiting {current_wait_turns} turn/s before starting any next task")
       current_wait_turns -= 1
-    api_response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages,
-      )
-    bot_utterance = api_response['choices'][0]['message']['content']
+    bot_utterance = create_response(messages, model_type, model, tokenizer)
     messages.append({"role": "assistant", "content": bot_utterance})
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_utterance}")
@@ -81,22 +79,19 @@ def chatbot():
         print(f"Executing microtask: {current_mt.get_identifier()}")
         messages, exercises, active_tasks, end_conversation, removed_tasks = current_mt.execute_task(messages, sat_exercises, prompt, 
                                                                                                      available_tasks, active_tasks, removed_tasks, 
-                                                                                                     global_emotions_map, global_events_map)
+                                                                                                     global_emotions_map, global_events_map,
+                                                                                                     model_type, model, tokenizer)
         
   if end_conversation:
     messages.append({"role": "system", 
        "content": f"{username} Needs to go now. Say goodbye to {username} and end the conversation until next time."})
-    api_response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages,
-      )
-    bot_utterance = api_response['choices'][0]['message']['content']
+    bot_utterance = create_response(messages, model_type, model, tokenizer)
     messages.append({"role": "assistant", "content": bot_utterance})
     print(colorama.Style.RESET_ALL)
-    print(colorama.Back.BLUE + colorama.Fore.WHITE + f"MiTa: {bot_utterance}")
+    print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_utterance}")
     print(colorama.Style.RESET_ALL)
     print("--------CONVERSATION ENDED--------")
 
 
 if __name__ == "__main__":
-    chatbot()
+    chatbot('gpt-3.5-turbo')
