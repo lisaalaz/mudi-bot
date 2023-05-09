@@ -35,18 +35,19 @@ def create_response(messages, model_type, model, tokenizer, task_prompt=None):
         else:
             prompt = [opt_prompt, extract_turns(messages, model_type), "MiTa: ", instruction_prompt, task_prompt]
         prompt = "\n".join(prompt)
-        prompt += f"\nMiTa:"
+        print(prompt)
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
         set_seed(42)
-        response = model.generate(input_ids, do_sample=True, max_length=512, max_new_tokens=1024)
+        response = model.generate(input_ids, do_sample=True, max_new_tokens=1024)
         bot_utterance = tokenizer.batch_decode(response, skip_special_tokens=True)
     elif model_type == "DIAL-FLANT5-XL":
         if task_prompt is None:
             prompt = dial_flant5_prompt.format("", extract_turns(messages, model_type), "")
         else:
             prompt = dial_flant5_prompt.format(f"and {task_prompt}", extract_turns(messages, model_type), f"that also {task_prompt}")
+        print(prompt)
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
-        response = model.generate(input_ids, max_length=512, max_new_tokens=1024)
+        response = model.generate(input_ids, max_new_tokens=1024)
         bot_utterance = tokenizer.decode(response[0], skip_special_tokens=True)
     return bot_utterance
     
