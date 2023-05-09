@@ -6,7 +6,7 @@ import microtask_utils
 from model_utils import load_model, create_response
 import parsing_utils
 
-from prompting_utils import username, instruction_prompt, system_prompt
+from prompting_utils import username, instruction_prompt, gpt_prompt, opt_prompt, dial_flant5_prompt
 
 # from secret_key import key # You will need your own OpenAI API key to insert below
 # openai.api_key = key
@@ -17,7 +17,7 @@ def chatbot(model_type):
   prompt = instruction_prompt
   messages = [
       {"role": "system", 
-       "content": system_prompt},
+       "content": gpt_prompt if model_type == "gpt-3.5-turbo" else (opt_prompt if model_type == "opt" else dial_flant5_prompt)},
        {"role": "user", 
        "content": "Hello MiTa"},
   ]

@@ -254,7 +254,7 @@ def load_microtasks():
 def turn(question, task_reference, messages, sat_exercises, prompt, available_tasks, all_tasks, removed_tasks, global_emotions_map, global_events_map, model_type, model, tokenizer):
   if question:
     messages.append({"role": "system", "content": f"{prompt}" + question.format(task_reference)})
-  bot_turn = create_response(messages, model_type, model, tokenizer, task_prompt=None)
+  bot_turn = create_response(messages, model_type, model, tokenizer, task_prompt=f"{prompt}" + question.format(task_reference))
   print(colorama.Style.RESET_ALL)
   print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_turn}")
   if question == "ask the following question (you may paraphrase it slightly): 'I can recommend the following exercises, please let me know which one you would like'.":
