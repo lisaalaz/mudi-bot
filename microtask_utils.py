@@ -95,7 +95,7 @@ class Microtask():
     current_turn = list(self.dag.keys())[0]
 
     while continue_task and not end_conversation: #and self.pointer < len(self.dag):
-        bot_turn, user_turn, messages, exercises, chosen_ex_number, active_tasks, end_conversation = turn(self.dag[current_turn]["question"], reference_to_pass, messages, exercises, chosen_ex_number,
+        bot_turn, user_turn, messages, exercises, chosen_ex_number, active_tasks, end_conversation = turn(self.dag[current_turn]["question"][model_type], reference_to_pass, messages, exercises, chosen_ex_number,
                                                                                         prompt, available_tasks, active_tasks, removed_tasks, current_task, global_emotions_map, global_events_map,
                                                                                         model_type, model, tokenizer)
         choice = self.dag[current_turn]["continue_condition"](bot_turn, user_turn)
