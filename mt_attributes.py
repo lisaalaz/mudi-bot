@@ -17,9 +17,8 @@ mt_attributes = {
       "priority": 1, 
       "wait_turns_on_exit": lambda removed_tasks: math.ceil(len(removed_tasks)/len(mt_attributes)),
       "enter_condition": lambda emotion, event, removed_tasks, active_tasks_list, current_task: parsing_utils.is_emotion_negative(emotion) and 
-                                                                                                  not any(x.get_name()=="investigate event causing {} emotion" for x in active_tasks_list) and 
-                                                                                                    not any(x.get_name()=="investigate event causing {} emotion" for x in removed_tasks) and
-                                                                                                      current_task.get_name()!="investigate event causing {} emotion",
+                                                                                                         ((not any(x.get_name()=="investigate event causing {} emotion" for x in active_tasks_list + removed_tasks) and
+                                                                                                           current_task.get_name()!="investigate event causing {} emotion") or len(active_tasks_list) == 0),
       "expires_after": math.inf, 
       "dag": {
           "ask_event": {
@@ -44,9 +43,8 @@ mt_attributes = {
       "type": "event",
       "priority": 2, 
       "wait_turns_on_exit": lambda removed_tasks: math.ceil(len(removed_tasks)/len(mt_attributes)),
-      "enter_condition": lambda emotion, event, removed_tasks, active_tasks_list, current_task: not (any(x.get_name() == "investigate event '{}'" for x in active_tasks_list)) and
-                                                                                                  not (any(x.get_name() == "investigate event '{}'" for x in removed_tasks)) and
-                                                                                                    current_task.get_name()!="investigate event '{}'",
+      "enter_condition": lambda emotion, event, removed_tasks, active_tasks_list, current_task: (not (any(x.get_name() == "investigate event '{}'" for x in active_tasks_list + removed_tasks)) and
+                                                                                                         current_task.get_name()!="investigate event '{}'") or len(active_tasks_list) == 0,
       "expires_after": math.inf, 
       "dag": {
           "ask_when_event_happened": {
@@ -63,9 +61,8 @@ mt_attributes = {
       "type": "event",
       "priority": 3, 
       "wait_turns_on_exit": lambda removed_tasks: math.ceil(len(removed_tasks)/len(mt_attributes)),
-      "enter_condition": lambda emotion, event, removed_tasks, active_tasks_list, current_task: not (any(x.get_name() == "investigate emotion caused by event '{}'" for x in active_tasks_list)) and
-                                                                                                  not (any(x.get_name() == "investigate emotion caused by event '{}'" for x in removed_tasks)) and
-                                                                                                    current_task.get_name()!="investigate emotion caused by event '{}'",
+      "enter_condition": lambda emotion, event, removed_tasks, active_tasks_list, current_task: (not (any(x.get_name() == "investigate emotion caused by event '{}'" for x in active_tasks_list + removed_tasks)) and
+                                                                                                       current_task.get_name()!="investigate emotion caused by event '{}'") or len(active_tasks_list) == 0,
                                                                                    
       "expires_after": math.inf, 
       "dag": {
@@ -92,9 +89,8 @@ mt_attributes = {
       "priority": 4, 
       "wait_turns_on_exit": lambda removed_tasks: math.ceil(len(removed_tasks)/len(mt_attributes)),
       "enter_condition": lambda emotion, event, removed_tasks, active_tasks_list, current_task: parsing_utils.is_emotion_negative(emotion) and 
-                                                                                                  not (any(x.get_name() == "project {} emotion" for x in active_tasks_list)) and
-                                                                                                    not (any(x.get_name() == "project {} emotion" for x in removed_tasks)) and
-                                                                                                      current_task.get_name()!="project {} emotion",
+                                                                                                  ((not (any(x.get_name() == "project {} emotion" for x in active_tasks_list + removed_tasks)) and
+                                                                                                      current_task.get_name()!="project {} emotion") or len(active_tasks_list) == 0),
       "expires_after": math.inf, 
       "dag": {
           "project": {
