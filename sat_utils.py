@@ -22,7 +22,7 @@ exercise_titles = [
             "20: Updating our rigid beliefs to enhance creativity", 
             "21: Practicing Affirmations",
             "22: Using laughter to come to terms with a tragedy",
-            "23: Try to become gradually aware of your IWM and the influence of your primary care-givers and early environment.",
+            "23: Try to become gradually aware of your IWM and the influence of your primary care-givers and early environment",
             "24: Recognizing and containing the internal persecutor",
             "25: Solving personal crises",
             "26: Discovering your true, free, and sovereign self in this age of emergency",
@@ -176,7 +176,7 @@ def show_recommendations(sat_exercises):
   for ex in sat_exercises:
     print(ex)
 
-
-#def give_exercise_instructions(exercise_number):
-#  for line in EXERCISE_TEXTS[exercise_number]:
-#    print(line)
+def show_exercise_instructions(chosen_ex_number):
+  utterance1 = f"Ok! Below are the instructions to complete exercise {exercise_titles[int(chosen_ex_number)]}."
+  utterance2 = "\n".join(exercise_texts[int(chosen_ex_number)])
+  return f"{utterance1}\n{utterance2}"

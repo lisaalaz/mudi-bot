@@ -44,6 +44,8 @@ def is_question(text):
 
 
 def is_answer_positive(question, reply):
+  if "yes" in reply.lower():
+    return True
   api_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -95,7 +97,6 @@ def event_classification(text):
     personal_or_impersonal = "impersonal"
   elif "personal" in answer.lower():
     personal_or_impersonal = "personal"
-  #print(f"is event: {is_event}, {personal_or_impersonal}")
   return is_event, personal_or_impersonal 
 
 
@@ -195,42 +196,18 @@ def is_emotion_negative(emotion):
 
 
 def contains_number(text):
-  if "1" in text:
-    answer = "1"
-  elif "2" in text:
-    answer = "2"
-  elif "3" in text:
-    answer = "3"
-  elif "4" in text:
-    answer = "4"
-  else:
-    api_response = openai.ChatCompletion.create(
+  for i in reversed(range(1,27)):
+    if str(i) in text:
+      return str(i)
+  api_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", 
              "content": f"Write the number, in digits, contained in the following text. Write the number and nothing else (no punctuation). If the text does not contain a number, just say 'no number': {text}"}
         ]
-     )
-    answer = api_response['choices'][0]['message']['content']
-  #print(f"contains number: {answer}")
-  return answer
-
-
-def wants_exercise(question, answer):
-  api_response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", 
-             "content": f"Speaker_A: {question}. Speaker_B: {answer}. Does Speaker_B want to do an exercise? Answer yes or no."}
-        ]
-     )
+      )
   answer = api_response['choices'][0]['message']['content']
-  if "yes" in answer.lower():
-    answer = True
-  else:
-    answer = False
-  #print(f"user wants exercise: {answer}")
-  return answer
+  return answer.lower()
 
 
 def wants_to_end(text):
@@ -238,7 +215,7 @@ def wants_to_end(text):
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", 
-             "content": f"does speaker of the following utterance imply that they wish to end the conversation (say just yes or no): {text}"}
+             "content": f"does the speaker of the following utterance imply that they wish to end the conversation and leave? (reply just yes or no): {text}"}
         ]
      )
   answer = api_response['choices'][0]['message']['content']
@@ -258,10 +235,10 @@ def drop_existing_keys(dict1, dict2):
   return new_dict
 
 
-def parse_user_message(global_emotions_map, global_events_map, prompt, sat_exercises):
+def parse_user_message(global_emotions_map, global_events_map, prompt, sat_exercises, curr_exercise_number):
   emotions_map = {}
   events_map = {}
-
+  curr_exercise_number = contains_number(prompt)
   is_event, _ = event_classification(prompt)
   emotion_detected = is_emotion(prompt)
   if emotion_detected:
@@ -294,5 +271,4 @@ def parse_user_message(global_emotions_map, global_events_map, prompt, sat_exerc
 
   global_emotions_map.update(emotions_map)
   global_events_map.update(events_map)
-
-  return global_emotions_map, global_events_map, emotions_map, events_map, sat_exercises
+  return global_emotions_map, global_events_map, emotions_map, events_map, sat_exercises, curr_exercise_number
