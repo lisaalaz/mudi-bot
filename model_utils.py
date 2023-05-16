@@ -38,8 +38,8 @@ def create_response(messages, model_type, model, tokenizer, pipeline, task_promp
             prompt = [opt_prompt, extract_turns(messages, model_type), "MiTa: ", instruction_prompt, task_prompt]
         prompt = "\n".join(prompt)
         #print(prompt)
-        #input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
-        #response = model.generate(input_ids, max_new_tokens=1024)
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
+        response = model.generate(input_ids, max_new_tokens=1024)
         bot_utterance = tokenizer.decode(response[0], skip_special_tokens=True)
         set_seed(42)
         #response = pipeline(prompt, max_length=256, early_stopping=True, do_sample=True, num_beams=3,
@@ -48,10 +48,10 @@ def create_response(messages, model_type, model, tokenizer, pipeline, task_promp
         #bot_utterance = response[0]['generated_text']
     elif model_type == "DIAL-FLANT5-XL":
         if task_prompt is None:
-            prompt = dial_flant5_prompt.format("", extract_turns(messages, model_type), "")
+            prompt = dial_flant5_prompt.format("Answer nicely", extract_turns(messages, model_type), "Answers nicely")
         else:
-            prompt = dial_flant5_prompt.format(f"and {task_prompt}", extract_turns(messages, model_type), f"that {task_prompt}")
-        #print(prompt)
+            prompt = dial_flant5_prompt.format(task_prompt, extract_turns(messages, model_type), task_prompt)
+        print(prompt)
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
         response = model.generate(input_ids, max_new_tokens=1024)
         bot_utterance = tokenizer.decode(response[0], skip_special_tokens=True)
@@ -59,7 +59,7 @@ def create_response(messages, model_type, model, tokenizer, pipeline, task_promp
     
 
 def extract_turns(messages, model_type):
-    previous_context = [turn for turn in messages if turn["role"] == "assistant" or turn["role"] == "user"]
+    previous_context = messages[-1]
     if len(previous_context) > 10:
         previous_context = previous_context[-10:]
     context_string = []
