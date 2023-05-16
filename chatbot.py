@@ -17,7 +17,7 @@ def chatbot(model_type):
   prompt = instruction_prompt if model_type in ["gpt-3.5-turbo", "opt"] else ""
   messages = [
       {"role": "system", 
-       "content": gpt_prompt if model_type == "gpt-3.5-turbo" else (opt_prompt if model_type == "opt" else dial_flant5_prompt)},
+       "content": gpt_prompt if model_type == "gpt-3.5-turbo" else (opt_prompt if model_type == "opt" else koala_prompt)},
        {"role": "user", 
        "content": "Hello MiTa"},
   ]
@@ -96,4 +96,4 @@ def chatbot(model_type):
 
 
 if __name__ == "__main__":
-    chatbot("gpt-3.5-turbo")
+    chatbot("koala")

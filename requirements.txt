@@ -1,5 +1,6 @@
 accelerate
 colorama
 openai
+sentencepiece
 torch
 transformers
