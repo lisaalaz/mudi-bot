@@ -6,7 +6,7 @@ import microtask_utils
 from model_utils import load_model, create_response
 import parsing_utils
 
-from prompting_utils import username, instruction_prompt, gpt_prompt, opt_prompt, dial_flant5_prompt
+from prompting_utils import gpt_initial_prompt, gpt_instruction_prompt, opt_koala_initial_prompt, opt_koala_instruction_prompt, username
 
 # from secret_key import key # You will need your own OpenAI API key to insert below
 # openai.api_key = key
@@ -14,10 +14,10 @@ from prompting_utils import username, instruction_prompt, gpt_prompt, opt_prompt
 
 def chatbot(model_type):
   model, tokenizer, pipeline = load_model(model_type)
-  prompt = instruction_prompt if model_type in ["gpt-3.5-turbo", "opt"] else ""
+  prompt = gpt_instruction_prompt if model_type in ["gpt-3.5-turbo", "opt"] else " ".join([opt_koala_initial_prompt, opt_koala_instruction_prompt])
   messages = [
       {"role": "system", 
-       "content": gpt_prompt if model_type == "gpt-3.5-turbo" else (opt_prompt if model_type == "opt" else koala_prompt)},
+       "content": gpt_initial_prompt},
        {"role": "user", 
        "content": "Hello MiTa"},
   ]
@@ -58,7 +58,7 @@ def chatbot(model_type):
     if current_wait_turns > 0:
       print(f"waiting {current_wait_turns} turn/s before starting any next task")
       current_wait_turns -= 1
-    bot_utterance = create_response(messages, model_type, model, tokenizer, pipeline)
+    bot_utterance = create_response(messages, model_type, pipeline)
     messages.append({"role": "assistant", "content": bot_utterance})
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_utterance}")
@@ -87,7 +87,7 @@ def chatbot(model_type):
   if end_conversation:
     messages.append({"role": "system", 
        "content": f"{username} Needs to go now. Say goodbye to {username} and end the conversation until next time."})
-    bot_utterance = create_response(messages, model_type, model, tokenizer, pipeline)
+    bot_utterance = create_response(messages, model_type, pipeline)
     messages.append({"role": "assistant", "content": bot_utterance})
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_utterance}")

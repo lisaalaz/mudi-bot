@@ -25,7 +25,7 @@ mt_attributes = {
               "question": {
                   "gpt-3.5-turbo": "ask what caused this {} feeling, or whether it is just a general feeling. If you said the same thing previously, change this enough so it is not repetitive. Do not ask any further questions apart from this.",
                   "opt": "ask what caused this feeling or whether it is just a geneal feeling",
-                  "DIAL-FLANT5-XL": "ask what caused this feeling"
+                  "koala": "ASKS WHAT CAUSED THIS FEELING"
               },
               "continue_condition": lambda bot_turn, user_turn: "ask_what_happened" if (parsing_utils.is_answer(bot_turn, user_turn) and parsing_utils.is_specific(bot_turn, user_turn)) else "abort",
           },
@@ -33,7 +33,7 @@ mt_attributes = {
               "question": {
                   "gpt-3.5-turbo": "ask if they can say a little more about what happened that caused the {} feeling. If you said the same thing previously, change this enough so it is not repetitive. Do not ask any other questions apart from this.",
                   "opt": "ask to talk some more about what happened that caused the {} feeling",
-                  "DIAL-FLANT5-XL": "ask to talk more about what happened",
+                  "koala": "ASKS TO TALK MORE ABOUT WHAT HAPPENED",
               },
               "continue_condition": lambda bot_turn, user_turn: "end" if parsing_utils.is_answer(bot_turn, user_turn) else "abort",
            },
@@ -51,7 +51,7 @@ mt_attributes = {
               "question": {
                   "gpt-3.5-turbo": "ask when the event {} happened. If you said the same thing previously, change this enough so it is not repetitive. Do not ask any other questions apart from this.",
                   "opt": "ask when the event {} happened",
-                  "DIAL-FLANT5-XL": "ask when this happened",
+                  "koala": "ASKS WHEN THIS HAPPENED",
               },
               "continue_condition": lambda bot_turn, user_turn: "end" if (parsing_utils.is_answer(bot_turn, user_turn)) else "abort",
            },
@@ -71,7 +71,7 @@ mt_attributes = {
               "question": {
                 "gpt-3.5-turbo": "say that it's important to confront our negative feelings and understand them fully, so you would like to ask again and in detail how the event {} makes them feel. If you said the same thing previously, change this enough so it is not repetitive. Do not ask any other questions apart from this.",
                 "opt": "ask in detail how the event {} makes them feel",
-                "DIAL-FLANT5-XL": "ask if there are emotions associated with this event",
+                "koala": "ASKS WHAT EMOTIONS STEMMED FROM THIS EVENT",
               },
               "continue_condition": lambda bot_turn, user_turn: "ask_more_feelings" if (parsing_utils.is_answer(bot_turn, user_turn)) else "abort"
           },
@@ -79,7 +79,7 @@ mt_attributes = {
               "question": {
                 "gpt-3.5-turbo": "ask, in the interest of self-discovery and self-awareness, if there are also other feelings associated with the event {}. If you said the same thing previously, change this enough so it is not repetitive. Do not ask any other questions apart from this.",
                 "opt": "ask if there are also other feelings associated with the event {}",
-                "DIAL-FLANT5-XL": "ask if there are also other feelings associated with the event",
+                "koala": "ASKS USER IF THEY ARE EXPERIENCING ANY OTHER FEELINGS",
               },
               "continue_condition": lambda bot_turn, user_turn: "end" if (parsing_utils.is_answer(bot_turn, user_turn)) else "abort"
            },
@@ -98,7 +98,7 @@ mt_attributes = {
               "question": {
                   "gpt-3.5-turbo": "ask the following question (you may paraphrase it slightly) without adding any further sentences: Could you try to project your current {} feeling onto your childhood self?",
                   "opt": "ask to project their current {} feeling onto your childhood self",
-                  "DIAL-FLANT5-XL": "ask to project the current feeling on the childhood self",
+                  "koala": "IS AN INVITE TO PROJECT THIS FEELING ONTO THE CHILDHOOD SELF (hint: projecting a feeling onto the childhood self is a therapeutic practice)",
               },
               "continue_condition": lambda bot_turn, user_turn: "explain_projection" if (parsing_utils.is_question(user_turn)) else ("end" if parsing_utils.is_answer_positive(bot_turn, user_turn) else "abort")
            },
@@ -106,7 +106,7 @@ mt_attributes = {
               "question": {
                   "gpt-3.5-turbo": "explain that to project a negative emotion onto the childhood self, one needs to imagine their childhood self is feeling what they are feeling right now. Then they should picture themselves consoling and hugging the child, perhaps playing with them or singing a happy song.",
                   "opt":  "say that they need to imagine the childhood self is feeling the {} feeling and they are consoling the child",
-                  "DIAL-FLANT5-XL": "say you don't know",
+                  "koala": "EXPLAINS THAT TO PROJECT A FEELING ONTO THE CHILDHOOD SELF ONE MUST IMAGINE THEIR CHILDHOOD SELF IS FEELING AS THEY DO NOW, AND TRY TO CONSOLE THE CHILD,",
               },
               "continue_condition": lambda bot_turn, user_turn: "end" if (parsing_utils.is_answer_positive(bot_turn, user_turn)) else "abort",
            }, 
@@ -123,7 +123,7 @@ mt_attributes = {
               "question": {
                   "gpt-3.5-turbo": "ask the following question (you may paraphrase it slightly): 'Would you like me to recommend a Self-Attachment technique exercise that might help?'",
                   "opt": "offer to suggest Self-Attachment technique exercise",
-                  "DIAL-FLANT5-XL": "offer to recommend an exercise",
+                  "koala": "ASKS 'Would you like a self-attachment technique exercise?' (HINT: YOU CAN PARAPHRASE THIS QUESTION SLIGHTLY BUT YOU CANNOT ADD ANY MORE SENTENCES)",
               },
               "continue_condition": lambda bot_turn, user_turn: "exercise_choice" if (parsing_utils.is_answer_positive(bot_turn, user_turn)) else "abort" #parsing_utils.is_answer(bot_turn, user_turn) and 
           },
@@ -131,7 +131,7 @@ mt_attributes = {
               "question": {
                   "gpt-3.5-turbo": "ask the following question in a respectful way (you may paraphrase it slightly) without adding any further sentences: I can recommend the following exercises, please let me know which one you would like.",
                   "opt": "Say that you can recommend the following exercises",
-                  "DIAL-FLANT5-XL": "say that you can recommend the following exercises",
+                  "koala": "SAYS 'Ok, I can recommend the following exercises:' (HINT: YOU CAN PARAPHRASE THIS QUESTION SLIGHTLY BUT YOU CANNOT ADD ANY MORE SENTENCES)",
               },
               "continue_condition": lambda bot_turn, user_turn: "exercise_instructions" if (parsing_utils.contains_number(user_turn) != "no number") else "abort" #parsing_utils.is_answer(bot_turn, user_turn) and 
            },
@@ -139,7 +139,7 @@ mt_attributes = {
               "question": {
                   "gpt-3.5-turbo": "ask the following question in a respectful way (you may paraphrase it slightly) without adding any further sentences: Please go to the exercise now, and let me know once you have done it. If for any reason you cannot do it right now, just let me know.",
                   "opt": "Ask to begin the exercise and let you know once it's done, or if it cannot be done",
-                  "DIAL-FLANT5-XL": "ask to begin the exercise and let you know once it's done",
+                  "koala": "SAYS 'Please go through the exercise now and let me know once you are done, or if you cannot complete it for any reason' (HINT: YOU CAN PARAPHRASE THIS QUESTION BUT YOU CANNOT ADD ANY MORE SENTENCES)",
               },
               "continue_condition": lambda bot_turn, user_turn: "end"
            },
