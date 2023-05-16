@@ -15,8 +15,8 @@ def load_model(model_type):
         model = OPTForCausalLM.from_pretrained("models/opt-2.7b").to(device)
         pipeline = TextGenerationPipeline(model=model, tokenizer=tokenizer, device=device)
     elif model_type == 'DIAL-FLANT5-XL':
-        tokenizer = AutoTokenizer.from_pretrained("models/DIAL-FLANT5-XL")
-        model = AutoModelForSeq2SeqLM.from_pretrained("models/DIAL-FLANT5-XL", device_map="auto")
+        tokenizer = AutoTokenizer.from_pretrained("models/koala-7B-HF")
+        model = AutoModelForSeq2SeqLM.from_pretrained("models/koala-7B-HF", device_map="auto")
         pipeline = None
     elif model_type == 'gpt-3.5-turbo':
         model = None
