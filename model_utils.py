@@ -13,16 +13,18 @@ def load_model(model_type):
     if model_type == 'opt':
         tokenizer = AutoTokenizer.from_pretrained("models/opt-2.7b")
         model = OPTForCausalLM.from_pretrained("models/opt-2.7b").to(device)
-        #pipeline = TextGenerationPipeline(model=model, tokenizer=tokenizer, device=device)
+        pipeline = TextGenerationPipeline(model=model, tokenizer=tokenizer, device=device)
     elif model_type == 'DIAL-FLANT5-XL':
         tokenizer = AutoTokenizer.from_pretrained("models/DIAL-FLANT5-XL")
         model = AutoModelForSeq2SeqLM.from_pretrained("models/DIAL-FLANT5-XL", device_map="auto")
+        pipeline = None
     elif model_type == 'gpt-3.5-turbo':
         model = None
         tokenizer = None
-    return model, tokenizer
+        pipeline = None
+    return model, tokenizer, pipeline
 
-def create_response(messages, model_type, model, tokenizer, task_prompt=None):
+def create_response(messages, model_type, model, tokenizer, pipeline, task_prompt=None):
     if model_type == "gpt-3.5-turbo":
         api_response = openai.ChatCompletion.create(
             model=model_type,
@@ -38,8 +40,10 @@ def create_response(messages, model_type, model, tokenizer, task_prompt=None):
         print(prompt)
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
         set_seed(42)
-        response = model.generate(input_ids, do_sample=True, max_new_tokens=1024)
-        bot_utterance = tokenizer.batch_decode(response, skip_special_tokens=True)
+        response = pipeline(input_ids, max_length=256, early_stopping=True, do_sample=True, num_beams=3,
+                            repetition_penalty=3.0, num_return_sequences=1, return_full_text=False)
+        
+        bot_utterance = response[0]['generated_text']
     elif model_type == "DIAL-FLANT5-XL":
         if task_prompt is None:
             prompt = dial_flant5_prompt.format("", extract_turns(messages, model_type), "")

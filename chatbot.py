@@ -13,7 +13,7 @@ from prompting_utils import username, instruction_prompt, gpt_prompt, opt_prompt
 
 
 def chatbot(model_type):
-  model, tokenizer = load_model(model_type)
+  model, tokenizer, pipeline = load_model(model_type)
   prompt = instruction_prompt
   messages = [
       {"role": "system", 
@@ -58,7 +58,7 @@ def chatbot(model_type):
     if current_wait_turns > 0:
       print(f"waiting {current_wait_turns} turn/s before starting any next task")
       current_wait_turns -= 1
-    bot_utterance = create_response(messages, model_type, model, tokenizer)
+    bot_utterance = create_response(messages, model_type, model, tokenizer, pipeline)
     messages.append({"role": "assistant", "content": bot_utterance})
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_utterance}")
@@ -82,12 +82,12 @@ def chatbot(model_type):
         print(f"Executing microtask: {current_task.get_identifier()}")
         messages, sat_exercises, current_ex_number, active_tasks, end_conversation, removed_tasks = current_task.execute_task(messages, sat_exercises, current_ex_number, prompt, 
                                                                                                      available_tasks, active_tasks, removed_tasks, current_task, 
-                                                                                                     global_emotions_map, global_events_map, model_type, model, tokenizer)
+                                                                                                     global_emotions_map, global_events_map, model_type, model, tokenizer, pipeline)
         
   if end_conversation:
     messages.append({"role": "system", 
        "content": f"{username} Needs to go now. Say goodbye to {username} and end the conversation until next time."})
-    bot_utterance = create_response(messages, model_type, model, tokenizer)
+    bot_utterance = create_response(messages, model_type, model, tokenizer, pipeline)
     messages.append({"role": "assistant", "content": bot_utterance})
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_utterance}")

@@ -84,7 +84,7 @@ class Microtask():
     removed_tasks.append(self)
     return active_tasks, removed_tasks
 
-  def execute_task(self, messages, exercises, chosen_ex_number, prompt, available_tasks, active_tasks, removed_tasks, current_task, global_emotions_map, global_events_map, model_type, model, tokenizer):
+  def execute_task(self, messages, exercises, chosen_ex_number, prompt, available_tasks, active_tasks, removed_tasks, current_task, global_emotions_map, global_events_map, model_type, model, tokenizer, pipeline):
     end_conversation = False
     continue_task = True
 
@@ -97,7 +97,7 @@ class Microtask():
     while continue_task and not end_conversation: #and self.pointer < len(self.dag):
         bot_turn, user_turn, messages, exercises, chosen_ex_number, active_tasks, end_conversation = turn(self.dag[current_turn]["question"][model_type], reference_to_pass, messages, exercises, chosen_ex_number,
                                                                                         prompt, available_tasks, active_tasks, removed_tasks, current_task, global_emotions_map, global_events_map,
-                                                                                        model_type, model, tokenizer)
+                                                                                        model_type, model, tokenizer, pipeline)
         choice = self.dag[current_turn]["continue_condition"](bot_turn, user_turn)
         #print(f"The choice is {choice}")
         if end_conversation:
@@ -166,23 +166,23 @@ def load_microtasks():
   return available_microtasks
 
 
-def turn(question, task_reference, messages, sat_exercises, chosen_ex_number, prompt, available_tasks, all_tasks, removed_tasks, current_task, global_emotions_map, global_events_map, model_type, model, tokenizer):
+def turn(question, task_reference, messages, sat_exercises, chosen_ex_number, prompt, available_tasks, all_tasks, removed_tasks, current_task, global_emotions_map, global_events_map, model_type, model, tokenizer, pipeline):
   if question:
     messages.append({"role": "system", "content": f"{prompt}" + question.format(task_reference)})
   if question == "ask the following question in a respectful way (you may paraphrase it slightly) without adding any further sentences: I can recommend the following exercises, please let me know which one you would like.":
     message = [{"role": "system", "content": question.format(task_reference)}]
-    bot_turn = create_response(message, model_type, model, tokenizer, task_prompt=question.format(task_reference))
+    bot_turn = create_response(message, model_type, model, tokenizer, pipeline, task_prompt=question.format(task_reference))
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_turn}")    
     sat_utils.show_recommendations(sat_exercises)
   elif question == "ask the following question in a respectful way (you may paraphrase it slightly) without adding any further sentences: Please go to the exercise now, and let me know once you have done it. If for any reason you cannot do it right now, just let me know.":
     message = [{"role": "system", "content": question.format(task_reference)}]
-    bot_turn = create_response(message, model_type, model, tokenizer, task_prompt=question.format(task_reference))
+    bot_turn = create_response(message, model_type, model, tokenizer, pipeline, task_prompt=question.format(task_reference))
     sat_exercises.remove(sat_utils.exercise_titles[int(chosen_ex_number)])
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {sat_utils.show_exercise_instructions(chosen_ex_number)}\n{bot_turn}")    
   else:
-    bot_turn = create_response(messages, model_type, model, tokenizer, task_prompt=f"{prompt}" + question.format(task_reference))
+    bot_turn = create_response(messages, model_type, model, tokenizer, pipeline, task_prompt=f"{prompt}" + question.format(task_reference))
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_turn}")    
   
