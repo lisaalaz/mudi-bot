@@ -38,10 +38,12 @@ def create_response(messages, model_type, model, tokenizer, pipeline, task_promp
             prompt = [opt_prompt, extract_turns(messages, model_type), "MiTa: ", instruction_prompt, task_prompt]
         prompt = "\n".join(prompt)
         #print(prompt)
-        #input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
+        response = model.generate(input_ids, max_new_tokens=1024)
+        bot_utterance = tokenizer.decode(response[0], skip_special_tokens=True)
         set_seed(42)
-        response = pipeline(prompt, max_length=256, early_stopping=True, do_sample=True, num_beams=3,
-                            repetition_penalty=3.0, num_return_sequences=1, return_full_text=False)
+        #response = pipeline(prompt, max_length=256, early_stopping=True, do_sample=True, num_beams=3,
+                            #repetition_penalty=3.0, num_return_sequences=1, return_full_text=False)
         
         bot_utterance = response[0]['generated_text']
     elif model_type == "DIAL-FLANT5-XL":
