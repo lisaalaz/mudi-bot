@@ -37,10 +37,10 @@ def create_response(messages, model_type, model, tokenizer, pipeline, task_promp
         else:
             prompt = [opt_prompt, extract_turns(messages, model_type), "MiTa: ", instruction_prompt, task_prompt]
         prompt = "\n".join(prompt)
-        print(prompt)
-        input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
+        #print(prompt)
+        #input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
         set_seed(42)
-        response = pipeline(input_ids, max_length=256, early_stopping=True, do_sample=True, num_beams=3,
+        response = pipeline(prompt, max_length=256, early_stopping=True, do_sample=True, num_beams=3,
                             repetition_penalty=3.0, num_return_sequences=1, return_full_text=False)
         
         bot_utterance = response[0]['generated_text']
@@ -49,7 +49,7 @@ def create_response(messages, model_type, model, tokenizer, pipeline, task_promp
             prompt = dial_flant5_prompt.format("", extract_turns(messages, model_type), "")
         else:
             prompt = dial_flant5_prompt.format(f"and {task_prompt}", extract_turns(messages, model_type), f"that also {task_prompt}")
-        print(prompt)
+        #print(prompt)
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
         response = model.generate(input_ids, max_new_tokens=1024)
         bot_utterance = tokenizer.decode(response[0], skip_special_tokens=True)
