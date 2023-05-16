@@ -14,7 +14,7 @@ from prompting_utils import username, instruction_prompt, gpt_prompt, opt_prompt
 
 def chatbot(model_type):
   model, tokenizer, pipeline = load_model(model_type)
-  prompt = instruction_prompt
+  prompt = instruction_prompt if model_type in ["gpt-3.5-turbo", "opt"] else ""
   messages = [
       {"role": "system", 
        "content": gpt_prompt if model_type == "gpt-3.5-turbo" else (opt_prompt if model_type == "opt" else dial_flant5_prompt)},
