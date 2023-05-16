@@ -1,7 +1,7 @@
 import openai
 import torch
 
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, OPTForCausalLM, TextGenerationPipeline, set_seed
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, EncoderDecoderConfig, OPTForCausalLM, TextGenerationPipeline, set_seed
 
 from prompting_utils import gpt_prompt, instruction_prompt, opt_prompt, dial_flant5_prompt, username
 from secret_key import key # You will need your own OpenAI API key to insert below
@@ -16,7 +16,7 @@ def load_model(model_type):
         pipeline = TextGenerationPipeline(model=model, tokenizer=tokenizer, device=device)
     elif model_type == 'DIAL-FLANT5-XL':
         tokenizer = AutoTokenizer.from_pretrained("models/koala-7B-HF")
-        model = AutoModelForSeq2SeqLM.from_pretrained("models/koala-7B-HF", device_map="auto")
+        model = EncoderDecoderConfig.from_pretrained("models/koala-7B-HF", device_map="auto")
         pipeline = None
     elif model_type == 'gpt-3.5-turbo':
         model = None
