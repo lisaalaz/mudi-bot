@@ -72,6 +72,6 @@ def extract_turns(messages, model_type):
         extracted_turns = "\n".join(context_string)
     elif model_type == "DIAL-FLANT5-XL":
         for turn in previous_context:
-            context_string.append(turn["content"])
+            context_string.append(turn)
         extracted_turns = " [ENDOFTURN] ".join(context_string)
     return extracted_turns
