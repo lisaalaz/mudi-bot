@@ -24,8 +24,8 @@ mt_attributes = {
           "ask_event": {
               "question": {
                   "gpt-3.5-turbo": "ask what caused this {} feeling, or whether it is just a general feeling. If you said the same thing previously, change this enough so it is not repetitive. Do not ask any further questions apart from this.",
-                  "opt": "ASKS WHAT CAUSED THIS FEELING"
-                  "koala": "ASKS WHAT CAUSED THIS FEELING"
+                  "opt": "ASKS WHAT CAUSED THIS FEELING",
+                  "koala": "ASKS WHAT CAUSED THIS FEELING",
               },
               "continue_condition": lambda bot_turn, user_turn: "ask_what_happened" if (parsing_utils.is_answer(bot_turn, user_turn) and parsing_utils.is_specific(bot_turn, user_turn)) else "abort",
           },
