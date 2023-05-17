@@ -23,7 +23,6 @@ def load_model(model_type):
     elif model_type == 'gpt-3.5-turbo':
         model = None
         tokenizer = None
-        pipe = None
     return model, tokenizer, pipe
 
 
@@ -39,7 +38,7 @@ def create_response(messages, model_type, pipe, task_prompt=""):
                   extract_turns(messages), task_prompt)])
         print(prompt)
         set_seed(42)
-        response = pipe(prompt, do_sample=True)
+        response = pipe(prompt, do_sample=True, return_full_text=False)
         bot_utterance = response[0]['generated_text']
         if model_type == "opt":
             bot_utterance = bot_utterance.split("MiTa: ")[1].split(f"{username}:")[0]
