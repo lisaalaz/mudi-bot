@@ -8,13 +8,12 @@ from prompting_utils import gpt_instruction_prompt, opt_koala_initial_prompt, op
 from secret_key import key # You will need your own OpenAI API key to insert below
 openai.api_key = key
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+#device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def load_model(model_type):
     if model_type == 'opt':
         tokenizer = AutoTokenizer.from_pretrained("models/opt-2.7b")
-        model = OPTForCausalLM.from_pretrained("models/opt-2.7b").to(device)
-        #pipe = TextGenerationPipeline(model=model, tokenizer=tokenizer, device=device)
+        model = OPTForCausalLM.from_pretrained("models/opt-2.7b", device_map='auto')
         pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_length=512, temperature=0.7, top_p=0.95, repetition_penalty=1.15)
     elif model_type == 'koala':
         tokenizer = LlamaTokenizer.from_pretrained("models/koala-7b")
