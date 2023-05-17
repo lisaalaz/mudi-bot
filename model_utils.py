@@ -26,7 +26,6 @@ def load_model(model_type):
 
 
 def create_response(messages, model_type, pipe, task_prompt=""):
-    print(f"the messages are: {messages}\nthe model_type is: {model_type}\nthe task_prompt is {task_prompt}")
     if model_type == "gpt-3.5-turbo":
         api_response = openai.ChatCompletion.create(
             model=model_type,
@@ -36,11 +35,10 @@ def create_response(messages, model_type, pipe, task_prompt=""):
     elif model_type == "opt" or model_type == "koala":
         prompt = " ".join([opt_koala_initial_prompt, opt_koala_instruction_prompt.format(
                   extract_turns(messages), " ".join(["THAT ALSO", task_prompt]))])
-        print(f"the prompt is {prompt}")
+        #print(f"the prompt is {prompt}")
         set_seed(42)
         response = pipe(prompt, do_sample=True, return_full_text=False)
         bot_utterance = response[0]['generated_text']
-        print(f"the bot_utterance is {bot_utterance}")
         if model_type == "opt":
             bot_utterance = bot_utterance.split(f"{username}:")[0]
     return bot_utterance
