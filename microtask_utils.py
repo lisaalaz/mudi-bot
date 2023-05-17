@@ -182,7 +182,10 @@ def turn(question, task_reference, messages, sat_exercises, chosen_ex_number, pr
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {sat_utils.show_exercise_instructions(chosen_ex_number)}\n{bot_turn}")    
   else:
-    bot_turn = create_response(messages, model_type, pipeline, task_prompt=f"{prompt}" + question.format(task_reference))
+    if model_type == "gpt-3.5-turbo":
+        bot_turn = create_response(messages, model_type, pipeline, task_prompt=f"{prompt}" + question.format(task_reference))
+    else:
+        bot_turn = create_response(messages, model_type, pipeline, task_prompt=question.format(task_reference))
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_turn}")    
   

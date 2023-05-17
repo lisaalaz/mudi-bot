@@ -35,7 +35,7 @@ def create_response(messages, model_type, pipe, task_prompt=""):
         bot_utterance = api_response['choices'][0]['message']['content']
     elif model_type == "opt" or model_type == "koala":
         prompt = " ".join([opt_koala_initial_prompt, opt_koala_instruction_prompt.format(
-                  extract_turns(messages), task_prompt)])
+                  extract_turns(messages), " ".join(["THAT ALSO", task_prompt]))])
         print(f"the prompt is {prompt}")
         set_seed(42)
         response = pipe(prompt, do_sample=True, return_full_text=False)
