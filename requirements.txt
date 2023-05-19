@@ -1,4 +1,5 @@
 accelerate
+bitsandbytes
 colorama
 openai
 sentencepiece

@@ -3,8 +3,8 @@ lib
 .Python
 pyvenv.cfg
 secret_key.py
-**/opt-2.7b
-**/koala-7B
+**/koala_13B_vanilla
+**/vicuna-13b-1.1
 **/share
 **/__pycache__
 
