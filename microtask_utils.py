@@ -169,25 +169,29 @@ def load_microtasks():
 def turn(question, task_reference, messages, sat_exercises, chosen_ex_number, prompt, available_tasks, all_tasks, removed_tasks, current_task, global_emotions_map, global_events_map, model_type, model, tokenizer, pipeline):
   if question:
     messages.append({"role": "system", "content": f"{prompt}" + question.format(task_reference)})
-  if question == "ask the following question in a respectful way (you may paraphrase it slightly) without adding any further sentences: I can recommend the following exercises, please let me know which one you would like.":
+  if "recommend the following exercises" in question:
     message = [{"role": "system", "content": question.format(task_reference)}]
     bot_turn = create_response(message, model_type, pipeline, task_prompt=question.format(task_reference))
+    if "\n" in bot_turn:
+      bot_turn = bot_turn.split("\n")[0].strip()
     print(colorama.Style.RESET_ALL)
     print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_turn}")    
     sat_utils.show_recommendations(sat_exercises)
-  elif question == "ask the following question in a respectful way (you may paraphrase it slightly) without adding any further sentences: Please go to the exercise now, and let me know once you have done it. If for any reason you cannot do it right now, just let me know.":
+  elif "go through the exercise" in question:
     message = [{"role": "system", "content": question.format(task_reference)}]
     bot_turn = create_response(message, model_type, pipeline, task_prompt=question.format(task_reference))
+    if "\n" in bot_turn:
+      bot_turn = bot_turn.split("\n")[0].strip()
     sat_exercises.remove(sat_utils.exercise_titles[int(chosen_ex_number)])
     print(colorama.Style.RESET_ALL)
-    print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {sat_utils.show_exercise_instructions(chosen_ex_number)}\n{bot_turn}")    
+    print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {sat_utils.show_exercise_instructions(chosen_ex_number)}\n{bot_turn}")
   else:
     if model_type == "gpt-3.5-turbo":
         bot_turn = create_response(messages, model_type, pipeline, task_prompt=f"{prompt}" + question.format(task_reference))
     else:
         bot_turn = create_response(messages, model_type, pipeline, task_prompt=question.format(task_reference))
     print(colorama.Style.RESET_ALL)
-    print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_turn}")    
+    print(colorama.Back.WHITE + colorama.Fore.BLACK + f"MiTa: {bot_turn}")
   
   print(colorama.Back.WHITE + colorama.Fore.BLACK)
   user_turn = input(f'{username}: ')
