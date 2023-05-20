@@ -110,8 +110,8 @@ class Microtask():
         current_turn = list(self.dag.keys())[current_pointer]
         previous_turn = list(self.dag.keys())[current_pointer-1]
         question = " ".join(
-        [f"and provide a very short summary of what you said earlier to go back to the previous topic (hint: what you said was {self.dag[previous_turn]['question'].split(' (HINT:')[0]}) and",
-        self.dag[current_turn]["question"]]) if self.is_resumed() else " ".join(["and", self.dag[current_turn]["question"]])
+        [f"and provide a short summary of what you said earlier (hint: what you said was {self.dag[previous_turn]['question'].split(' (HINT:')[0]}) and then",
+        self.dag[current_turn]["question"].split(' (HINT:')[0]]) if self.is_resumed() else " ".join(["and", self.dag[current_turn]["question"]])
         self.set_resumed(False)
         bot_turn, user_turn, messages, exercises, chosen_ex_number, s_intention, country, active_tasks, end_conversation = turn(
                                                                                         question, reference_to_pass, messages, exercises, chosen_ex_number,
@@ -162,10 +162,9 @@ def listify_queue(q, increase_turn_counter_switch):
 
 
 def add_microtasks(emotions_map, events_map, s_intention, available_tasks, active_tasks, removed_tasks, current_task):
-  print(f"s_intention is {s_intention}")
+  #print(f"s_intention is {s_intention}")
   for mt in available_tasks:
     if mt.get_type() == "emotion":
-      #print(f"for selecting {mt.get_name()} s_intention is {s_intention}")
       for emotion in emotions_map:
         event = ""
         active_tasks, active_tasks_list = listify_queue(active_tasks, False)
@@ -174,7 +173,6 @@ def add_microtasks(emotions_map, events_map, s_intention, available_tasks, activ
           active_tasks = add_to_queue(mt, emotion, active_tasks)
           print(f"Added microtask: {mt.get_name().format(emotion)}")
     elif mt.get_type() == "event":
-      #print(f"for selecting {mt.get_name()} s_intention is {s_intention}")
       for event in events_map:
         emotion = ""
         active_tasks, active_tasks_list = listify_queue(active_tasks, False)
@@ -183,7 +181,6 @@ def add_microtasks(emotions_map, events_map, s_intention, available_tasks, activ
           active_tasks = add_to_queue(mt, event, active_tasks)
           print(f"Added microtask: {mt.get_name().format(event)}")
     elif mt.get_type() == "intention":
-      #print(f"for selecting {mt.get_name()} s_intention is {s_intention}")
       intention = ""
       active_tasks, active_tasks_list = listify_queue(active_tasks, False)
       enter_condition = mt.get_enter_condition()(s_intention, None, None, removed_tasks, active_tasks_list, current_task)
@@ -250,7 +247,7 @@ def turn(question, task_reference, messages, sat_exercises, chosen_ex_number, pr
 
   messages.append({"role": "assistant", "content": bot_turn})
   messages.append({"role": "user", "content": user_turn})
-  print(f"{prompt}" + question.format(task_reference))
+  #print(f"{prompt}" + question.format(task_reference))
   return bot_turn, user_turn, messages, sat_exercises, chosen_ex_number, s_intention, country, all_tasks, end
 
 

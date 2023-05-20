@@ -51,39 +51,34 @@ exercise_texts = [
                   "Reflect on how you feel in each phase from (i) to (iii).",
             ],
             [
-                "Print copies of happy photo to display at home, work, and in your wallet. Consider setting its digital image as the background on your phone and laptop, etc. \
-                 Select a jolly lyrical song you cherish that invokes feelings of warmth, affection, love. Learn the song by heart and sing it as often as you can in your daily routine. \
-                 While looking at the happy photo/avatar, sing the song, as a way to establish a deep emotional bond with the child in your mind. \
-                 Start quietly; then, over time, allow your voice to become louder while using more of your body (e.g. shaking your shoulders, hands, and lifting your eyebrows up and down). \
-                 Imagine that in this way, like a parent, you are have a loving, passionate dialogue and are joyfully dancing and playing with the child.",
+                "Print copies of happy photo to display at home, work, and in your wallet. Consider setting its digital image as the background on your phone and laptop, etc.",
+                "Select a jolly lyrical song you cherish that invokes feelings of warmth, affection, love. Learn the song by heart and sing it as often as you can in your daily routine.",
+                "While looking at the happy photo/avatar, sing the song, as a way to establish a deep emotional bond with the child in your mind.",
+                "Start quietly; then, over time, allow your voice to become louder while using more of your body (e.g. shaking your shoulders, hands, and lifting your eyebrows up and down).",
+                "Imagine that in this way, like a parent, you are have a loving, passionate dialogue and are joyfully dancing and playing with the child.",
             ],
             ["While genuinely smiling at the happy photo/avatar, loudly say to your child: 'I passionately love you and deeply care for you'."],
             [
-                "In this exercise, we start to care for the child as our own child. We attribute and project our own emotions to the child. We, as our adult self, begin with a pledge we make at an especial time and place. \
-                 After reading the pledge silently, we confidently pledge out loud the following: 'From now on, I will seek to act as a devoted and loving parent to this child, consistently and wholeheartedly care for them in every way possible. \
-                 I will do everything I can to support the health and emotional growth of this child'.",
+                "In this exercise, we start to care for the child as our own child. We attribute and project our own emotions to the child. We, as our adult self, begin with a pledge we make at an especial time and place.",
+                "After reading the pledge silently, we confidently pledge out loud the following: 'From now on, I will seek to act as a devoted and loving parent to this child, consistently and wholeheartedly care for them in every way possible.",
+                "I will do everything I can to support the health and emotional growth of this child'.",
             ],
             [
-                "Through imagination or by drawing, consider your emotional world as a home with some derelict parts that you will fully renovate. \
-                 The new home is intended to provide a safe haven at times of distress for the child and a safe base for the child to tackle life's challenges. \
-                 The new home and its garden is bright and sunny; we imagine carrying out these self attachment exercises in this environment. \
-                 The unrestored basement of the new house is the remnant of the derelict house and contains our negative emotions. \
-                 When suffering negative emotions, imagine that the child is trapped in the basement but can gradually learn to open the door of the basement, walk out and enter the bright rooms, reuniting with the adult.",
+                "Through imagination or by drawing, consider your emotional world as a home with some derelict parts that you will fully renovate.",
+                "The new home is intended to provide a safe haven at times of distress for the child and a safe base for the child to tackle life's challenges.",
+                "The new home and its garden is bright and sunny; we imagine carrying out these self attachment exercises in this environment.",
+                "The unrestored basement of the new house is the remnant of the derelict house and contains our negative emotions.",
+                "When suffering negative emotions, imagine that the child is trapped in the basement but can gradually learn to open the door of the basement, walk out and enter the bright rooms, reuniting with the adult.",
             ],
             [
-                "7a: Choose some short phrase, e.g., 'You are my beautiful child' or 'My love'. Say it slowly, out loud at least five times as you look at the happy photo/avatar. \
-                 Then sing your favourite chosen love song at least five times. As previously, increase your volume and begin to use your whole body.",
-                "7b: While looking in a mirror, imagine your image to be that of the Child (i.e., your emotional self), then begin to loudly sing your previously chosen song. \
-                 As previously, increase your volume and begin to use your whole body. \
-                 (If you find it difficult to imagine the Child in the mirror, put the 'Happy' photo of your Child in front of the mirror and do the exercise while looking at your Happy childhood photo in the mirror). \
-                 Do this twice now and then as many times as possible in different circumstances during the day, such as while on the way to work or while cooking dinner, to integrate them into your new life. \
-                 When singing your favourite song becomes a habit of yours, it becomes an effective tool for enhancing positive affects and managing emotions.",
+                "7a: Choose some short phrase, e.g., 'You are my beautiful child' or 'My love'. Say it slowly, out loud at least five times as you look at the happy photo/avatar. Then sing your favourite chosen love song at least five times. As previously, increase your volume and begin to use your whole body.",
+                "7b: While looking in a mirror, imagine your image to be that of the Child (i.e., your emotional self), then begin to loudly sing your previously chosen song. As previously, increase your volume and begin to use your whole body. (If you find it difficult to imagine the Child in the mirror, put the 'Happy' photo of your Child in front of the mirror and do the exercise while looking at your Happy childhood photo in the mirror). Do this twice now and then as many times as possible in different circumstances during the day, such as while on the way to work or while cooking dinner, to integrate them into your new life. When singing your favourite song becomes a habit of yours, it becomes an effective tool for enhancing positive affects and managing emotions.",
             ],
             [
-                "Creating an attachment to nature for your Child is an effective way to increase joy and reduce negative emotions. Go outside to a garden, local park, wood or forest. \
-                 Spend at least 5 minutes admiring a tree, attempting to appreciate its real beauty as you have never previously experienced. \
-                 Repeat this process, including with other aspects of nature (e.g. sky, stars, plants, birds, rivers, sea, your favourite animal), until you feel you have developed an attachment to nature that helps regulate your emotions. \
-                 Achieving this will help you want to spend more time in nature after this course ends.",
+                "Creating an attachment to nature for your Child is an effective way to increase joy and reduce negative emotions. Go outside to a garden, local park, wood or forest.",
+                "Spend at least 5 minutes admiring a tree, attempting to appreciate its real beauty as you have never previously experienced.",
+                "Repeat this process, including with other aspects of nature (e.g. sky, stars, plants, birds, rivers, sea, your favourite animal), until you feel you have developed an attachment to nature that helps regulate your emotions.",
+                "Achieving this will help you want to spend more time in nature after this course ends.",
             ],
             [
                 "With closed eyes, imagine the unhappy photo/avatar and project your negative emotions to the unhappy photo/avatar representing the Child.",
@@ -102,33 +97,28 @@ exercise_texts = [
             ],
             ["For this exercise, try to act like a child: loosen up facial and body muscles, open up your mouth and sing your favourite song while laughing (or at least smiling) on your own."],
             [
-                "Immediately after accomplishing something, e.g. doing household chores, having a conversation with a neighbour, or reading an article, and smile at the thought of this as an achievement, \
-                 then once you are comfortable, begin to laugh for at least ten seconds.",
+                "Immediately after accomplishing something, e.g. doing household chores, having a conversation with a neighbour, or reading an article, and smile at the thought of this as an achievement, then once you are comfortable, begin to laugh for at least ten seconds.",
             ],
             ["Looking at your happy photo/avatar, smile and then begin to laugh for at least ten seconds. Repeat this process at least three times."],
             [
-                "At a time when you are alone, open your mouth slightly, loosen your face muscles, raise your eyebrows, then slowly and continuously repeat one of the following tones, each of which uses a minimum amount of energy: \
-                 'eh, eh, eh, eh'; or 'ah, ah, ah, ah'; or 'oh, oh, oh, oh'; or 'uh, uh, uh, uh'; or 'ye, ye, ye, ye'. If you need a subject to laugh at, you can laugh at the silliness of the exercise! \
-                  Once this continuous intentional laughter becomes a habit, you would be able to shape it according to your personality and style to create your own brand of laughter.",
+                "At a time when you are alone, open your mouth slightly, loosen your face muscles, raise your eyebrows, then slowly and continuously repeat one of the following tones, each of which uses a minimum amount of energy:",
+                "'eh, eh, eh, eh'; or 'ah, ah, ah, ah'; or 'oh, oh, oh, oh'; or 'uh, uh, uh, uh'; or 'ye, ye, ye, ye'. If you need a subject to laugh at, you can laugh at the silliness of the exercise!",
+                "Once this continuous intentional laughter becomes a habit, you would be able to shape it according to your personality and style to create your own brand of laughter.",
             ],
             [
-                "Stare at the black vase. Laugh or at least smile for one minute the moment your perception changes and you see two white faces, conceived as Adult and Child, looking at each other (IT, ST, PT). \
-                 Stare at the two white faces and laugh or at least smile for one minute the moment your perception changes and you see the black vase (IT, ST).",
+                "Stare at the black vase. Laugh or at least smile for one minute the moment your perception changes and you see two white faces, conceived as Adult and Child, looking at each other (IT, ST, PT).",
+                "Stare at the two white faces and laugh or at least smile for one minute the moment your perception changes and you see the black vase (IT, ST).",
             ],
             [
-                "Visualize a painful event that took place in the past (it can be a recent event that you have struggled with, or a painful event that took place in your childhood and you have endured for a long time), \
-                 and despite its painfulness, try to see a positive impact it has had for you. Use any of the theories for humour to try to laugh or at least smile at the event.",
+                "Visualize a painful event that took place in the past (it can be a recent event that you have struggled with, or a painful event that took place in your childhood and you have endured for a long time), and despite its painfulness, try to see a positive impact it has had for you. Use any of the theories for humour to try to laugh or at least smile at the event.",
             ],
             [
-                "Try to identify any pattern of narcissistic and anti social feelings that your Child has acted out in your current or past relationships or any long term resentment borne against someone. \
-                 Try to recognize how much of your time and energy is consumed in such acting out and bearing resentment.",
+                "Try to identify any pattern of narcissistic and anti social feelings that your Child has acted out in your current or past relationships or any long term resentment borne against someone. Try to recognize how much of your time and energy is consumed in such acting out and bearing resentment.",
             ],
             [
                 "Work out a new way to handle, in the future, what you have identified as acting out antisocial feelings or bearing personal resentment in your life.",
-                "1. Without denying these feelings, try to reflect and contain them and avoid acting them out. Try to let go of the personal resentment. This may be hard and challenging but it is necessary for emotional growth. \
-                  Here, you are taking a critical but constructive stance towards your Child and are exercising foresighted compassion.",
-                "2. Find a positive way of re-channeling the aggressive energy invoked by these feelings into productive work (e.g., going for some exercise, talking to a friend, etc.) \
-                  and ultimately into creative work towards your noble goal in life.",
+                "1. Without denying these feelings, try to reflect and contain them and avoid acting them out. Try to let go of the personal resentment. This may be hard and challenging but it is necessary for emotional growth. Here, you are taking a critical but constructive stance towards your Child and are exercising foresighted compassion.",
+                "2. Find a positive way of re-channeling the aggressive energy invoked by these feelings into productive work (e.g., going for some exercise, talking to a friend, etc.) and ultimately into creative work towards your noble goal in life.",
             ],
             [
                 "Look in your past life for a compassionate figure who impressed you by being kind and helpful with some words of wisdom when you had problems.",
@@ -139,12 +129,11 @@ exercise_texts = [
                 "One particular song you may try is 'I cannot help falling in love with you'.",
             ],
             [
-                "Challenge your usual ideological framework to weaken any one sided belief patterns and encourage spontaneity and examination of any issue from multiple perspectives. \
-                 Practice this with subjects or themes that you have deep rooted beliefs about and you are also interested in. This may include any social, political, or ethical issue, such as marriage, sexual orientation or racism. \
-                 For example, whatever your political viewpoint on a specific subject is, consider the subject both from a liberal and conservative or from a left wing and right wing point of view, \
-                 and try to understand both sides of the issue and challenge your dominant ideological framework. \
-                 This does not mean that you would change your viewpoint but it allows you to see the subject from different perspectives and to be able to put yourself in other people's shoes. \
-                 Try to consider a question or issue that is different from what you may have thought of while practising this exercise in the past, and do so for at least 5 minutes.",
+                "Challenge your usual ideological framework to weaken any one sided belief patterns and encourage spontaneity and examination of any issue from multiple perspectives.",
+                "Practice this with subjects or themes that you have deep rooted beliefs about and you are also interested in. This may include any social, political, or ethical issue, such as marriage, sexual orientation or racism.",
+                "For example, whatever your political viewpoint on a specific subject is, consider the subject both from a liberal and conservative or from a left wing and right wing point of view and try to understand both sides of the issue and challenge your dominant ideological framework.",
+                "This does not mean that you would change your viewpoint but it allows you to see the subject from different perspectives and to be able to put yourself in other people's shoes.",
+                "Try to consider a question or issue that is different from what you may have thought of while practising this exercise in the past, and do so for at least 5 minutes.",
             ],
             ["Put together a list of inspirational affirmations by figures you admire. Choose the three that inspire you most. Read them out and repeat slowly for at least three minutes."],
             [
