@@ -4,12 +4,14 @@ import queue
 import microtask_utils
 from model_utils import load_model, create_response
 import parsing_utils
-from prompting_utils import gpt_initial_prompt, gpt_instruction_prompt, prompts, username
+from prompting_utils import gpt_initial_prompt, prompts, username
 
 def chatbot(model_type):
   if model_type != "gpt-3.5-turbo":
      model, tokenizer, pipeline = load_model(model_type)
-  prompt = gpt_instruction_prompt if model_type=="gpt-3.5-turbo" else prompts[model_type]
+  else:
+     pipeline = None
+  prompt = prompts[model_type]
   messages = [
       {"role": "system",
        "content": gpt_initial_prompt},
@@ -43,6 +45,8 @@ def chatbot(model_type):
   active_tasks = queue.PriorityQueue(maxsize=10)
   removed_tasks = []
   sat_exercises = []
+  s_intention = False
+  country = None
   current_ex_number = "no number"
   end_conversation = False
   current_wait_turns = 0
@@ -61,11 +65,11 @@ def chatbot(model_type):
     user_utterance = input(f"{username}: ")
     print(colorama.Style.RESET_ALL)
     end_conversation = parsing_utils.wants_to_end(user_utterance)
-    global_emotions_map, global_events_map, emotions_map, events_map, sat_exercises, current_ex_number = parsing_utils.parse_user_message(global_emotions_map, global_events_map,
-                                                                                                                                          user_utterance, sat_exercises, current_ex_number)
+    global_emotions_map, global_events_map, emotions_map, events_map, sat_exercises, current_ex_number, s_intention = parsing_utils.parse_user_message(global_emotions_map, global_events_map,
+                                                                                                                                             user_utterance, sat_exercises, current_ex_number)
     messages.append({"role": "user", "content": user_utterance})
 
-    active_tasks = microtask_utils.add_microtasks(emotions_map, events_map, available_tasks, active_tasks, removed_tasks, current_task)
+    active_tasks, s_intention = microtask_utils.add_microtasks(emotions_map, events_map, s_intention, available_tasks, active_tasks, removed_tasks, current_task)
 
     while active_tasks.qsize() > 0 and current_wait_turns <= 0:
         current_task = active_tasks.get(block=False)[1]
@@ -74,9 +78,9 @@ def chatbot(model_type):
         print(f"Current active microtasks: {[x.get_identifier() for x in active_tasks_list]}")
         print(f"Completed and aborted microtasks: {[x.get_identifier() for x in removed_tasks]}")
         print(f"Executing microtask: {current_task.get_identifier()}")
-        messages, sat_exercises, current_ex_number, active_tasks, end_conversation, removed_tasks = current_task.execute_task(messages, sat_exercises, current_ex_number, prompt,
+        messages, sat_exercises, current_ex_number, s_intention, country, active_tasks, end_conversation, removed_tasks = current_task.execute_task(messages, sat_exercises, current_ex_number, prompt,
                                                                                                      available_tasks, active_tasks, removed_tasks, current_task,
-                                                                                                     global_emotions_map, global_events_map, model_type, model, tokenizer, pipeline)
+                                                                                                     global_emotions_map, global_events_map, model_type, pipeline, country)
   if end_conversation:
     messages.append({"role": "system",
        "content": f"{username} Needs to go now. Say goodbye to {username} and end the conversation until next time."})

@@ -1,6 +1,7 @@
 accelerate
 -i https://test.pypi.org/simple/ bitsandbytes-cuda113
 colorama
+fuzzywuzzy[speedup]
 openai
 sentencepiece
 torch

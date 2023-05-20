@@ -7,9 +7,8 @@ gpt_initial_prompt = f"Your name is MiTa, you are a kind and empathetic psychoth
     You never tell {username} that you are not supposed to mention these things, you just don't mention them at all. \
     When {username} is distressed or something bad happened, all you do is ask questions in a supportive way."
 
-gpt_instruction_prompt = f"Answer what {username} just said and answer any question they asked in full. After that, you should also "
-
 prompts = {
+    "gpt-3.5-turbo": "Answer with empathy and kindness ",
     "koala-13B": "BEGINNING OF CONVERSATION: {} (Instruction: {}). GPT:",
     "vicuna-13B": "{} (Instruction: {}). Assistant:",
 }

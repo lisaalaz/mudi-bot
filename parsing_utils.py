@@ -1,11 +1,77 @@
 import copy
 import openai
+import re
+import torch
+from transformers import AutoModelForMaskedLM
+from tokenizers import ByteLevelBPETokenizer
+from tokenizers.processors import BertProcessing
 
 from prompting_utils import username
 from sat_utils import add_exercises
 from secret_key import key 
 
 openai.api_key = key # You will need your own OpenAI API key.
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+labels = ['not_s', 's']
+label2int = dict(zip(labels, list(range(len(labels)))))
+
+class ClassificationModel(torch.nn.Module):
+    def __init__(self, base_model, n_classes, base_model_output_size=768, dropout=0.05):
+        super().__init__()
+        self.base_model = base_model
+        
+        self.classifier = torch.nn.Sequential(
+            torch.nn.Dropout(dropout),
+            torch.nn.Linear(base_model_output_size, base_model_output_size),
+            torch.nn.Mish(),
+            torch.nn.Dropout(dropout),
+            torch.nn.Linear(base_model_output_size, n_classes)
+        )
+        
+        for layer in self.classifier:
+            if isinstance(layer, torch.nn.Linear):
+                layer.weight.data.normal_(mean=0.0, std=0.02)
+                if layer.bias is not None:
+                    layer.bias.data.zero_()
+
+    def forward(self, input_):
+        X, attention_mask = input_
+        hidden_states = self.base_model(X, attention_mask=attention_mask)
+        
+        return self.classifier(hidden_states[0][:, 0, :])
+    
+with torch.no_grad():
+  s_model = ClassificationModel(AutoModelForMaskedLM.from_pretrained("roberta-base").base_model, len(labels))
+  s_model.load_state_dict(torch.load('models/RoBERTa_s_intention.pt', map_location=torch.device(device)))
+
+def is_s_intention(text):
+  text = re.sub(r'[^\w\s]', '', text)
+  text = text.lower()
+
+  t = ByteLevelBPETokenizer(
+            "models/tokenizer/vocab.json",
+            "models/tokenizer/merges.txt"
+        )
+  t._tokenizer.post_processor = BertProcessing(
+            ("</s>", t.token_to_id("</s>")),
+            ("<s>", t.token_to_id("<s>")),
+        )
+  t.enable_truncation(512)
+  t.enable_padding(pad_id=t.token_to_id("<pad>"))
+  tokenizer = t
+
+  encoded = tokenizer.encode(text)
+  sequence_padded = torch.tensor(encoded.ids).unsqueeze(0)
+  attention_mask_padded = torch.tensor(encoded.attention_mask).unsqueeze(0)
+   
+  output = s_model((sequence_padded, attention_mask_padded))
+  _, top_class = output.topk(1, dim=1)
+  label = int(top_class[0][0])
+  label_map = {v: k for k, v in label2int.items()}
+  label = label_map[label]
+  return True if label=="s" else False
 
 def is_answer(question, reply):
   # Whether user's reply answers bot's utterance or not.
@@ -79,12 +145,12 @@ def event_classification(text):
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system",
-             "content": f"[Input]: My cat died last week. [Is it an event and is it personal]: yes, personal. \
+             "content": f"[Input]: My cat died last week. [Is it an event and is it personal]: yes, personal. [Input]: I want to kill myself. [Is it an event and is it personal]: no, not an event. \
              [Input]: I had a terrible fight with my sister and I am sad now. [Is it an event and is it personal]: yes, personal. [Input]: Joe Biden has won the election. [Is it an event and is it personal]: yes, not personal. \
              [Input]: I went to cemetery the other day, to visit my father's grave. He died a long time ago. [Is it an event and is it personal]: yes, personal. \
              [Input]: I hope I can find a boyfriend. [Is it an event and is it personal]: no, not an event. [Input]: The Mets are playing a match tomorrow. [Is it an event and is it personal]: yes, not personal. \
              [Input]: I am quite sad. [Is it an event and is it personal]: no, not an event. [Input]: Everyone is becoming stupid in this country. [Is it an event and is it personal]: yes, not personal. \
-             [Input]: {text}. [Is it an event and is it personal]:"}
+             [Input]: I just want to die. [Is it an event and is it personal]: no, not an event. [Input]: {text}. [Is it an event and is it personal]:"}
         ]
      )
   answer = api_response['choices'][0]['message']['content']
@@ -225,6 +291,7 @@ def drop_existing_keys(dict1, dict2):
 def parse_user_message(global_emotions_map, global_events_map, prompt, sat_exercises, curr_exercise_number):
   emotions_map = {}
   events_map = {}
+  s_intention = is_s_intention(prompt)
   curr_exercise_number = contains_number(prompt)
   is_event, _ = event_classification(prompt)
   emotion_detected = is_emotion(prompt)
@@ -257,4 +324,4 @@ def parse_user_message(global_emotions_map, global_events_map, prompt, sat_exerc
 
   global_emotions_map.update(emotions_map)
   global_events_map.update(events_map)
-  return global_emotions_map, global_events_map, emotions_map, events_map, sat_exercises, curr_exercise_number
+  return global_emotions_map, global_events_map, emotions_map, events_map, sat_exercises, curr_exercise_number, s_intention
