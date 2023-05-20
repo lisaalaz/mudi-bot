@@ -3,6 +3,7 @@ accelerate
 colorama
 fuzzywuzzy[speedup]
 openai
+retry
 sentencepiece
 torch
 transformers

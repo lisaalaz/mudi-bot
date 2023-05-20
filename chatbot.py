@@ -92,4 +92,4 @@ def chatbot(model_type):
     print("--------CONVERSATION ENDED--------")
 
 if __name__ == "__main__":
-    chatbot("koala-13B")
+    chatbot("gpt-3.5-turbo")

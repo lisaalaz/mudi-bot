@@ -2,6 +2,7 @@ import copy
 import openai
 import re
 import torch
+from retry import retry
 from transformers import AutoModelForMaskedLM
 from tokenizers import ByteLevelBPETokenizer
 from tokenizers.processors import BertProcessing
@@ -73,6 +74,7 @@ def is_s_intention(text):
   label = label_map[label]
   return True if label=="s" else False
 
+@retry()
 def is_answer(question, reply):
   # Whether user's reply answers bot's utterance or not.
   api_response = openai.ChatCompletion.create(
@@ -89,6 +91,7 @@ def is_answer(question, reply):
     answer = False
   return answer
 
+@retry()
 def is_question(text):
   # Establishes whether the user's utterance contains a question for the bot to answer.
   api_response = openai.ChatCompletion.create(
@@ -105,6 +108,7 @@ def is_question(text):
     answer = False
   return answer
 
+@retry()
 def is_answer_positive(question, reply):
   if "yes" in reply.lower():
     return True
@@ -122,6 +126,7 @@ def is_answer_positive(question, reply):
     answer = False
   return answer
 
+@retry()
 def is_specific(question, reply):
   api_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -137,6 +142,7 @@ def is_specific(question, reply):
     answer = False
   return answer
 
+@retry()
 def event_classification(text):
   # Whether user's utterance describes an event, and whether it is personal or not.
   is_event = False
@@ -162,6 +168,7 @@ def event_classification(text):
     personal_or_impersonal = "personal"
   return is_event, personal_or_impersonal
 
+@retry()
 def extract_event(text):
   # Extracts very short summary of described event.
   api_response = openai.ChatCompletion.create(
@@ -174,6 +181,7 @@ def extract_event(text):
   answer = api_response['choices'][0]['message']['content']
   return answer
 
+@retry()
 def past_or_future_event(text):
   api_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -189,6 +197,7 @@ def past_or_future_event(text):
     answer = "past"
   return is_answer
 
+@retry()
 def recent_or_distant_event(text):
   api_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -205,6 +214,7 @@ def recent_or_distant_event(text):
     answer = "recent"
   return answer
 
+@retry()
 def is_emotion(text):
   api_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -224,6 +234,7 @@ def is_emotion(text):
     answer = False
   return answer
 
+@retry()
 def emotion_classification(text):
   emotions_list = ["happiness", "contentment", "sadness", "fear", "anxiety", "anger", "love", "insecurity", "disgust", "disappointment", "shame", "guilt", "envy", "jealousy"]
   emotion = "neutral"
@@ -245,12 +256,14 @@ def emotion_classification(text):
         degree = d
   return emotion, degree
 
+@retry()
 def is_emotion_negative(emotion):
   answer = True
   if emotion.lower() in ["happiness", "contentment", "love", "neutral"]:
     answer = False
   return answer
 
+@retry()
 def contains_number(text):
   for i in reversed(range(1,27)):
     if str(i) in text:
@@ -266,6 +279,7 @@ def contains_number(text):
   answer = api_response['choices'][0]['message']['content']
   return answer.lower()
 
+@retry()
 def wants_to_end(text):
   api_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",

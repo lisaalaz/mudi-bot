@@ -41,7 +41,7 @@ mt_attributes = {
       "expires_after": math.inf, 
       "dag": {
           "ask_event": {
-              "question": "and also ask if something happened or if this is just a general feeling",
+              "question": "ask if something happened or if this is just a general feeling",
               "continue_condition": lambda bot_turn, user_turn, active_tasks_list, current_task: "wait" if any(x.get_priority() < current_task.get_priority() for x in active_tasks_list) else (
                                                                           "ask_what_happened" if (parsing_utils.is_answer(bot_turn, user_turn) and parsing_utils.is_specific(bot_turn, user_turn)) else "abort"),
           },

@@ -1,5 +1,6 @@
 import openai
 import torch
+from retry import retry
 from transformers import LlamaTokenizer, LlamaForCausalLM, pipeline, set_seed
 
 from prompting_utils import prompts, user_names, assistant_names
@@ -20,6 +21,7 @@ def load_model(model_type):
                          temperature=0.7, top_p=0.95, repetition_penalty=1.15)
     return model, tokenizer, pipe
 
+@retry()
 def create_response(messages, model_type, pipe, task_prompt=""):
     if model_type == "gpt-3.5-turbo":
         api_response = openai.ChatCompletion.create(
