@@ -13,7 +13,7 @@ def load_model(model_type):
     elif model_type=="vicuna-13B":
         tokenizer = LlamaTokenizer.from_pretrained(f"models/vicuna-13b-1.1")
         model = LlamaForCausalLM.from_pretrained(f"models/vicuna-13b-1.1", load_in_8bit=True, device_map='auto')
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_length=512,
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=256,
                          temperature=0.7, top_p=0.95, repetition_penalty=1.15)
     return model, tokenizer, pipe
 
@@ -36,8 +36,8 @@ def create_response(messages, model_type, pipe, task_prompt=""):
 
 def extract_turns(messages, model_type):
     previous_context = [turn for turn in messages if turn["role"] == "assistant" or turn["role"] == "user"]
-    if len(previous_context) > 6:
-        previous_context = previous_context[-6:]
+    if len(previous_context) > 10:
+        previous_context = previous_context[-10:]
     context_string = []
     for turn in previous_context:
         if turn["role"] == "user":

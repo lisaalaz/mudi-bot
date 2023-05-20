@@ -1,5 +1,5 @@
 accelerate
-bitsandbytes
+-i https://test.pypi.org/simple/ bitsandbytes-cuda113
 colorama
 openai
 sentencepiece
