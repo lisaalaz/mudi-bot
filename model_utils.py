@@ -1,4 +1,5 @@
 import openai
+import torch
 from transformers import LlamaTokenizer, LlamaForCausalLM, pipeline, set_seed
 
 from prompting_utils import prompts, user_names, assistant_names
@@ -9,10 +10,12 @@ openai.api_key = key # You will need your own OpenAI API key.
 def load_model(model_type):
     if model_type=="koala-13B":
         tokenizer = LlamaTokenizer.from_pretrained(f"models/koala_13B_vanilla")
-        model = LlamaForCausalLM.from_pretrained(f"models/koala_13B_vanilla", load_in_8bit=True, device_map='auto')
+        model = LlamaForCausalLM.from_pretrained(f"models/koala_13B_vanilla", load_in_8bit=True,
+                                                 torch_dtype=torch.float16, device_map='auto')
     elif model_type=="vicuna-13B":
         tokenizer = LlamaTokenizer.from_pretrained(f"models/vicuna-13b-1.1")
-        model = LlamaForCausalLM.from_pretrained(f"models/vicuna-13b-1.1", load_in_8bit=True, device_map='auto')
+        model = LlamaForCausalLM.from_pretrained(f"models/vicuna-13b-1.1", load_in_8bit=True,
+                                                 torch_dtype=torch.float16, device_map='auto')
     pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=256,
                          temperature=0.7, top_p=0.95, repetition_penalty=1.15)
     return model, tokenizer, pipe
