@@ -55,7 +55,7 @@ def chatbot(model_type):
     active_tasks, _ = microtask_utils.listify_queue(active_tasks, True)
 
     if current_wait_turns > 0:
-      print(f"waiting {current_wait_turns} turn/s before starting any next task")
+      print(f"waiting {current_wait_turns} turn/s before starting any next goal")
       current_wait_turns -= 1
     bot_utterance = create_response(messages, model_type, pipeline)
     messages.append({"role": "assistant", "content": bot_utterance})
@@ -75,9 +75,12 @@ def chatbot(model_type):
         current_task = active_tasks.get(block=False)[1]
         current_wait_turns = current_task.get_wait_turns_on_exit()(removed_tasks)
         active_tasks, active_tasks_list = microtask_utils.listify_queue(active_tasks, False)
-        print(f"Current active microtasks: {[x.get_identifier() for x in active_tasks_list]}")
-        print(f"Completed and aborted microtasks: {[x.get_identifier() for x in removed_tasks]}")
-        print(f"Executing microtask: {current_task.get_identifier()}")
+        print(f"Current active goals: {[x.get_identifier() for x in active_tasks_list]}")
+        print(f"Completed and aborted goals: {[x.get_identifier() for x in removed_tasks]}")
+        if current_task.is_resumed():
+           print(f"Resuming goal: {current_task.get_identifier()}")
+        else:
+           print(f"Executing goal: {current_task.get_identifier()}")
         messages, sat_exercises, current_ex_number, s_intention, country, active_tasks, end_conversation, removed_tasks = current_task.execute_task(messages, sat_exercises, current_ex_number, prompt,
                                                                                                      available_tasks, active_tasks, removed_tasks, current_task,
                                                                                                      global_emotions_map, global_events_map, model_type, pipeline, country)

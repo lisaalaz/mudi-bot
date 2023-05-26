@@ -120,18 +120,18 @@ class Microtask():
         _, active_tasks_list = listify_queue(active_tasks, False)
         choice = self.dag[current_turn]["continue_condition"](bot_turn, user_turn, active_tasks_list, current_task)
         if end_conversation:
-            print(f"Aborted microtask: {self.get_identifier()}")
+            print(f"Aborted goal: {self.get_identifier()}")
         elif choice == "abort":
             active_tasks, removed_tasks = self.remove_task(active_tasks, removed_tasks)
-            print(f"Aborted microtask: {self.get_identifier()}")
+            print(f"Aborted goal: {self.get_identifier()}")
             continue_task = False
         elif choice == "end":
             active_tasks, removed_tasks = self.remove_task(active_tasks, removed_tasks)
-            print(f"Completed microtask: {self.get_identifier()}")
+            print(f"Completed goal: {self.get_identifier()}")
             continue_task = False
         elif choice == "wait":
             active_tasks = self.hold_task(active_tasks)
-            print(f"Held microtask: {self.get_identifier()}")
+            print(f"Suspended goal: {self.get_identifier()}")
             continue_task = False
         else:
             current_turn = choice
@@ -171,7 +171,7 @@ def add_microtasks(emotions_map, events_map, s_intention, available_tasks, activ
         enter_condition = mt.get_enter_condition()(s_intention, emotion, event, removed_tasks, active_tasks_list, current_task)
         if enter_condition: 
           active_tasks = add_to_queue(mt, emotion, active_tasks)
-          print(f"Added microtask: {mt.get_name().format(emotion)}")
+          print(f"Added goal: {mt.get_name().format(emotion)}")
     elif mt.get_type() == "event":
       for event in events_map:
         emotion = ""
@@ -179,14 +179,14 @@ def add_microtasks(emotions_map, events_map, s_intention, available_tasks, activ
         enter_condition = mt.get_enter_condition()(s_intention, emotion, event, removed_tasks, active_tasks_list, current_task)
         if enter_condition:
           active_tasks = add_to_queue(mt, event, active_tasks)
-          print(f"Added microtask: {mt.get_name().format(event)}")
+          print(f"Added goal: {mt.get_name().format(event)}")
     elif mt.get_type() == "intention":
       intention = ""
       active_tasks, active_tasks_list = listify_queue(active_tasks, False)
       enter_condition = mt.get_enter_condition()(s_intention, None, None, removed_tasks, active_tasks_list, current_task)
       if enter_condition:
           active_tasks = add_to_queue(mt, intention, active_tasks)
-          print(f"Added microtask: {mt.get_name().format(intention)}")
+          print(f"Added goal: {mt.get_name().format(intention)}")
   s_intention = False
   return active_tasks, s_intention
 
