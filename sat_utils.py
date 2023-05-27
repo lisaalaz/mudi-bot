@@ -196,28 +196,18 @@ exercise_rankings = {
 
 exercises = [i for i in range(1, 27)]
 
-
-def add_exercises(emotion, is_negative, sat_exercises):
-  if is_negative:
-    sat_exercises.extend([exercise_titles[15], exercise_titles[17], exercise_titles[18],
-                          exercise_titles[7], exercise_titles[8], exercise_titles[12], 
-                          exercise_titles[13], exercise_titles[14], exercise_titles[19],
-                          exercise_titles[21], exercise_titles[22], exercise_titles[23],
-                          exercise_titles[26]])
+def add_exercises(active_tasks, current_task, exercises): # TODO: use rankings to order exercises
+  active_tasks.append(current_task)
+  task_names = [x.get_name() for x in active_tasks]
+  if "suggest helplines" in task_names or (
+    "investigate event causing negative emotion" in task_names) or (
+    "project negative emotion" in task_names):
+    exercises.extend([exercise_titles[15], exercise_titles[17], exercise_titles[18],
+                      exercise_titles[7], exercise_titles[8], exercise_titles[12], 
+                      exercise_titles[13], exercise_titles[14], exercise_titles[19],
+                      exercise_titles[21], exercise_titles[22], exercise_titles[23],
+                      exercise_titles[26]])
   else:
-    if emotion in ["jealousy", "envy", "anger"]:
-      sat_exercises.extend([exercise_titles[17], exercise_titles[18]])
-    else:
-      sat_exercises.extend([exercise_titles[9], exercise_titles[7], exercise_titles[16], exercise_titles[15]])
-  sat_exercises = list(set(sat_exercises))
-  return sat_exercises
-
-
-def show_recommendations(sat_exercises):
-  for ex in sat_exercises:
-    print(ex)
-
-def show_exercise_instructions(chosen_ex_number):
-  utterance1 = f"Ok! Below are the instructions to complete exercise {exercise_titles[int(chosen_ex_number)]}."
-  utterance2 = "\n".join(exercise_texts[int(chosen_ex_number)])
-  return f"{utterance1}\n{utterance2}"
+    exercises.extend([exercise_titles[9], exercise_titles[7], exercise_titles[16],
+                      exercise_titles[15]])
+  return list(set(exercises))

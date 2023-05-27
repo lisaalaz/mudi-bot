@@ -3,7 +3,7 @@ import torch
 from retry import retry
 from transformers import LlamaTokenizer, LlamaForCausalLM, pipeline, set_seed
 
-from prompting_utils import prompts, user_names, assistant_names
+from prompting_utils import prompts, user_names, assistant_names, task_prediction_prompt
 from secret_key import key
 
 openai.api_key = key # You will need your own OpenAI API key.
@@ -19,7 +19,7 @@ def load_model(model_type):
                                                  torch_dtype=torch.float16, device_map='auto')
     pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=256,
                          temperature=0.7, top_p=0.95, repetition_penalty=1.15)
-    return model, tokenizer, pipe
+    return pipe
 
 @retry()
 def create_response(messages, model_type, pipe, task_prompt=""):
@@ -30,7 +30,7 @@ def create_response(messages, model_type, pipe, task_prompt=""):
         )
         bot_utterance = api_response['choices'][0]['message']['content']
     else:
-        prompt = prompts[model_type].format(extract_turns(messages, model_type), " ".join(["reply with empathy", task_prompt]))
+        prompt = prompts[model_type].format(extract_turns(messages, model_type), task_prompt)
         print(prompt)
         set_seed(42)
         response = pipe(prompt, do_sample=True, return_full_text=False)
@@ -51,3 +51,17 @@ def extract_turns(messages, model_type):
             context_string.append(f"{assistant_names[model_type]}: {turn['content']}")
     extracted_turns = " ".join(context_string)
     return extracted_turns
+
+@retry()
+def label_tasks(context):
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=task_prediction_prompt.format(context),
+        temperature=0.5,
+        max_tokens=64,
+        top_p=1,
+        frequency_penalty=1,
+        presence_penalty=1,
+    )
+    return response['choices'][0]['text']
+
