@@ -49,8 +49,11 @@ class Microtask():
   def get_wait_turns_on_exit(self):
     return self.wait_turns_on_exit
 
-  def get_status(self):
-    return self.is_active
+  def set_reference(self, utterance):
+    self.reference = utterance
+
+  def get_reference(self):
+    return self.reference
 
   def get_pointer(self):
     return self.pointer
@@ -96,16 +99,29 @@ class Microtask():
         current_pointer = self.get_pointer()
         current_turn = list(self.dag.keys())[current_pointer]
         instruction = " ".join(
-        [f"provide a short summary of what you said earlier (hint: what you said was {self.get_last_utterance()}) and then,",
-        self.get_dag()[current_turn]["instruction"]]) if self.is_resumed() else self.get_dag()[current_turn]["instruction"]
+        [f"mention again what was said earlier (hint: what was said was {self.get_last_utterance()}) and then,",
+        self.get_dag()[current_turn]["instruction"]]) if self.is_resumed() else (
+          " ".join([self.get_dag()[current_turn]["instruction"],
+                    f"(hint: this is related to what {username} said before, that is: {self.get_reference()})",]
+                    ) if self.get_turns_since_added() > 5 else self.get_dag()[current_turn]["instruction"])
         self.set_resumed(False)
         messages, exercises, chosen_ex_number, active_tasks = turn(instruction, messages, exercises, chosen_ex_number, available_tasks,
                                                                    active_tasks, finished_tasks, current_task, model_type, pipeline)
-        self.move_pointer_forward()
-        if self.get_pointer() == len(list(self.dag.keys())):
-          self.remove_task(finished_tasks)
+        _, active_tasks_list = listify_queue(active_tasks)
+        
+        if any(x.get_priority() < current_task.get_priority() for x in active_tasks_list):
+          print(f"Suspending '{current_task.get_name()}' goal")
+          print(messages[-3]["content"])
+          current_task.set_last_utterance(messages[-3]["content"])
+          active_tasks = current_task.hold_task(active_tasks)
           continue_task = False
-          
+
+        else:
+          self.move_pointer_forward()
+          if self.get_pointer() == len(list(self.dag.keys())):
+            self.remove_task(finished_tasks)
+            continue_task = False
+
     return messages, exercises, chosen_ex_number, active_tasks, finished_tasks
 
 
@@ -144,6 +160,7 @@ def add_tasks(messages, available_tasks, active_tasks, finished_tasks, current_t
   labels_string = label_tasks(context_string)
   for task in available_tasks:
     if task.get_name() in labels_string and task not in (active_tasks_list + finished_tasks) and current_task.get_name() != task.get_name():
+      task.set_reference(context_string.split("User: ")[1])
       active_tasks = add_to_queue(task, active_tasks)
       print(f"Added goal: {task.get_name()}")
       added = True
@@ -186,13 +203,12 @@ def turn(instruction, messages, sat_exercises, chosen_ex_number, available_tasks
     except:
       pass
   #end = information_extraction_utils.wants_to_end(user_turn)
-  
-  all_tasks = add_tasks(messages, available_tasks, all_tasks, finished_tasks, current_task)
   if instruction:
     del messages[-1]
 
   messages.append({"role": "assistant", "content": bot_turn})
   messages.append({"role": "user", "content": user_turn})
+  all_tasks = add_tasks(messages, available_tasks, all_tasks, finished_tasks, current_task)
 
   return messages, sat_exercises, chosen_ex_number, all_tasks
 
