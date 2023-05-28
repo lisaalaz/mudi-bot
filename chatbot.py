@@ -1,10 +1,13 @@
 import colorama
 import queue
+import warnings
 
 import task_utils
 from model_utils import load_model, create_response
 from prompting_utils import gpt_initial_prompt, username, botname
 import sat_utils
+
+warnings.filterwarnings('ignore')
 
 def chatbot(model_type):
   if model_type != "gpt-3.5-turbo":
