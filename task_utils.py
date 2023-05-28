@@ -111,7 +111,6 @@ class Microtask():
         
         if any(x.get_priority() < current_task.get_priority() for x in active_tasks_list):
           print(f"Suspending '{current_task.get_name()}' goal")
-          print(messages[-3]["content"])
           current_task.set_last_utterance(messages[-3]["content"])
           active_tasks = current_task.hold_task(active_tasks)
           continue_task = False

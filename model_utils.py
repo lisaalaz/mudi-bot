@@ -31,7 +31,7 @@ def create_response(messages, model_type, pipe, task_prompt=""):
         bot_utterance = api_response['choices'][0]['message']['content']
     else:
         prompt = prompts[model_type].format(extract_turns(messages, model_type), task_prompt)
-        print(prompt)
+        #print(prompt)
         set_seed(42)
         response = pipe(prompt, do_sample=True, return_full_text=False)
         bot_utterance = response[0]['generated_text']
