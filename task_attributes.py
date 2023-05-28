@@ -9,7 +9,8 @@ task_attributes = {
   },
   "suggest helplines": {
       "priority": 0, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      #"wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      "wait_turns_on_exit": 0,
       "expires_after": math.inf, 
       "dag": {
           "confirm_location": {
@@ -22,7 +23,8 @@ task_attributes = {
       },
   "investigate event causing negative emotion": {
       "priority": 1, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      #"wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      "wait_turns_on_exit": 0,
       "expires_after": 6, 
       "dag": {
           "ask_event": {
@@ -35,7 +37,8 @@ task_attributes = {
       },
   "investigate time of event": {
       "priority": 2, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      #"wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      "wait_turns_on_exit": 0,
       "expires_after": 8, 
       "dag": {
           "ask_when_event_happened": {
@@ -45,7 +48,8 @@ task_attributes = {
       },
   "investigate emotion caused by event": {
       "priority": 3, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),                                                                         
+      #"wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      "wait_turns_on_exit": 0,                                                                         
       "expires_after": 6, 
       "dag": {
           "ask_event_feelings": {
@@ -58,7 +62,8 @@ task_attributes = {
       },
   "project negative emotion": {
       "priority": 4, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      #"wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      "wait_turns_on_exit": 0,
       "expires_after": 10, 
       "dag": {
           "project": {
@@ -71,7 +76,8 @@ task_attributes = {
       },
   "exercise recommendation": {
       "priority": 5, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      #"wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
+      "wait_turns_on_exit": 0,
       "expires_after": math.inf, 
       "dag": {
           "propose_exercise": {
