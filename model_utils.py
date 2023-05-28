@@ -1,13 +1,13 @@
 import openai
 import torch
 from retry import retry
-from transformers import LlamaTokenizer, LlamaForCausalLM, pipeline, set_seed, utils
+from transformers import LlamaTokenizer, LlamaForCausalLM, pipeline, set_seed, logging
 
 from prompting_utils import prompts, user_names, assistant_names, task_prediction_prompt
 from secret_key import key
 
 openai.api_key = key # You will need your own OpenAI API key.
-utils.logging.set_verbosity_warning(50)
+logging.FATAL
 
 def load_model(model_type):
     if model_type=="koala-13B":
