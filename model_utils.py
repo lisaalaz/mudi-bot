@@ -16,8 +16,9 @@ def load_model(model_type):
     elif model_type=="vicuna-13B":
         tokenizer = LlamaTokenizer.from_pretrained(f"models/vicuna-13b-1.1")
         model = LlamaForCausalLM.from_pretrained(f"models/vicuna-13b-1.1", load_in_8bit=True,
-                                                 torch_dtype=torch.float16, device_map='auto')
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=256,
+                                                 torch_dtype=torch.float16, device_map='auto',
+                                                 max_position_embeddings=2048)
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=512,
                          temperature=0.7, top_p=0.95, repetition_penalty=1.15)
     return pipe
 
