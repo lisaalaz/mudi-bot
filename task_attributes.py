@@ -9,8 +9,8 @@ task_attributes = {
   },
   "suggest helplines": {
       "priority": 0, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)) - 1 if len(finished_tasks)>0 else 0,
-      "expires_after": math.inf, 
+      "wait_turns_on_exit": lambda finished_tasks: math.floor(len(finished_tasks)/len(task_attributes)),
+      "expires_after": 4, 
       "dag": {
           "confirm_location": {
               "instruction": "say the following, without changing its meaning or asking any further questions: From what you just told me, I sensed that you might be feeling suicidal. I just want to pause for a moment and check on you. There is help available, please do talk to someone about your concerns and how you're feeling. You deserve to be listened to if you're going through a difficult time. In order to recommend some resources and phone numbers you can call right away, could you please tell me what country you are located in right now?",
@@ -22,7 +22,7 @@ task_attributes = {
       },
   "investigate event causing negative emotion": {
       "priority": 1, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)) - 1 if len(finished_tasks)>0 else 0,
+      "wait_turns_on_exit": lambda finished_tasks: math.floor(len(finished_tasks)/len(task_attributes)),
       "expires_after": 6, 
       "dag": {
           "ask_event": {
@@ -35,7 +35,7 @@ task_attributes = {
       },
   "investigate time of event": {
       "priority": 2, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)) - 1 if len(finished_tasks)>0 else 0,
+      "wait_turns_on_exit": lambda finished_tasks: math.floor(len(finished_tasks)/len(task_attributes)),
       "expires_after": 8, 
       "dag": {
           "ask_when_event_happened": {
@@ -45,7 +45,7 @@ task_attributes = {
       },
   "investigate emotion caused by event": {
       "priority": 3, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)) - 1 if len(finished_tasks)>0 else 0,                                                                       
+      "wait_turns_on_exit": lambda finished_tasks: math.floor(len(finished_tasks)/len(task_attributes)),                                                                       
       "expires_after": 6, 
       "dag": {
           "ask_event_feelings": {
@@ -58,7 +58,7 @@ task_attributes = {
       },
   "project negative emotion": {
       "priority": 4, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)) - 1 if len(finished_tasks)>0 else 0,
+      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
       "expires_after": 10, 
       "dag": {
           "project": {
@@ -71,7 +71,7 @@ task_attributes = {
       },
   "exercise recommendation": {
       "priority": 5, 
-      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)) - 1 if len(finished_tasks)>0 else 0,
+      "wait_turns_on_exit": lambda finished_tasks: math.ceil(len(finished_tasks)/len(task_attributes)),
       "expires_after": math.inf, 
       "dag": {
           "propose_exercise": {
